@@ -1,0 +1,216 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<main class="justify-self-stretch flex-1">
+  
+  <div class="md:my-3 flex flex-wrap font-body w-full bg-zoning rounded-lg shadow justify-around">
+    <form class="text-texte justify-around" method="POST">
+      <div id="fullSearch" class="mx-2 col-span-3 items-center flex flex-wrap justify-around">
+        <h2 class="font-grands text-2xl w-full my-2 text-center">Rechercher un animal</h2>
+        <label for="espece-dropdown-small">Par espèce</label>
+        <select tabindex=0 class="col-span-3 text-xs block w-[50%] bg-fond" id="espece-dropdown-small" name="_especeDropdownSmall">
+          <option value="" disabled selected hidden>--Choisissez une espèce--</option>
+          {% for espece in especes %}
+            <option name="espece" value="{{ espece.id }}">{{ espece.nom }}</option> 
+          {% endfor %}
+        </select>
+          <input tabindex="0" id="deploy" class="w-[20%] col-span-1 my-1 py-2 px-2 bg-accents2-dark text-fond transition ease-in duration-200 text-center text-xs font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" type="button" value="Filtres">
+          <input tabindex="0" class="w-1/3 col-span-1 mx-auto my-3 py-2 px-2 bg-accents1-light text-fond transition ease-in duration-200 text-center text-xs font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" type="submit" value="Rechercher">         
+      </div>
+      <div id="searchCriterias" class="hidden grid grid-cols-3 gap-1 mx-auto my-3 text-texte">
+        <h3 class="col-span-3 font-grands text-3xl text-center my-2">Rechercher un animal</h3> 
+        
+        <div class="col-span-1 mx-auto">
+          <h4>Caractéristiques</h4>
+
+          <div class="my-2">
+            <label for="espece-dropdown-full">Espèce</label>
+            <select tabindex=0 class="text-xs block bg-fond" id="espece-dropdown-full" name="_especeDropdownFull">
+              <option value="" disabled selected hidden>--Choisissez une espèce--</option>
+              {% for espece in especes %}
+                <option name="espece" value="{{ espece.id }}">{{ espece.nom }}</option> 
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="my-2">
+            <fieldset id="sexe">
+              <legend>Sexe</legend>
+              <label><input type="radio" name="_sexe" value="Mâle" class="mx-1">Mâle</label>
+              <label><input type="radio" name="_sexe" value="Femelle" class="mx-1">Femelle</label>
+              <label><input type="radio" name="_sexe" value="Inconnu" class="mx-1">Inconnu</label>
+            </fieldset>
+          </div>
+
+          <div class="my-2">
+            <p>Age :</p>
+            <label class=# for="age-min">De&nbsp;</label>
+            <input class="bg-fond" id="age-min" name="_minAge" type="number" tabindex=0 min="0" max="3999">
+            <label class=# for="age-max">&nbsp;à&nbsp;</label>
+            <input class="bg-fond" id="age-max" name="_maxAge" type="number" tabindex=0 min="1" max="4000">
+            <label>&nbsp;ans.</label>
+          </div>
+        </div>
+          
+        <div class="col-span-1">
+          <p>Exclure si :</p>
+          {% for tag in tags %}
+            <div>
+              <label class=# for="{{ tag.nom }}">{{ tag.nom }}</label>
+              <input class=# type="checkbox" name="_tag" id="{{ tag.nom }}" value="{{ tag.nom }}"/>
+            </div>
+          {% endfor %}
+        </div>
+          
+        <div class="col-span-1">   
+          <div class="my-2">
+            <label for="dpt-select">Département</label>
+            <select tabindex=0 class="text-xs block bg-fond" id="dpt-select" name="_dptSelect">
+              <option value="00" disabled selected hidden>--Choisissez un département--</option>
+              <option value="01">01 - Ain</option> 
+              <option value="02">02 - Aisne</option> 
+              <option value="03">03 - Allier</option> 
+              <option value="04">04 - Alpes-de-Haute-Provence</option> 
+              <option value="05">05 - Hautes-Alpes</option> 
+              <option value="06">06 - Alpes-Maritimes</option> 
+              <option value="07">07 - Ardèche</option> 
+              <option value="08">08 - Ardennes</option> 
+              <option value="09">09 - Ariège</option> 
+              <option value="10">10 - Aube</option> 
+              <option value="11">11 - Aude</option> 
+              <option value="12">12 - Aveyron</option> 
+              <option value="13">13 - Bouches-du-Rhône</option> 
+              <option value="14">14 - Calvados</option> 
+              <option value="15">15 - Cantal</option> 
+              <option value="16">16 - Charente</option> 
+              <option value="17">17 - Charente-Maritime</option> 
+              <option value="18">18 - Cher</option> 
+              <option value="19">19 - Corrèze</option> 
+              <option value="21">21 - Côte-d'Or</option> 
+              <option value="22">22 - Côtes-d'Armor</option> 
+              <option value="23">23 - Creuse</option> 
+              <option value="24">24 - Dordogne</option> 
+              <option value="25">25 - Doubs</option> 
+              <option value="26">26 - Drôme</option> 
+              <option value="27">27 - Eure</option> 
+              <option value="28">28 - Eure-et-Loir</option> 
+              <option value="29">29 - Finistère</option> 
+              <option value="2A">2A - Corse-du-Sud</option> 
+              <option value="2B">2B - Haute-Corse</option> 
+              <option value="30">30 - Gard</option> 
+              <option value="31">31 - Haute-Garonne</option> 
+              <option value="32">32 - Gers</option> 
+              <option value="33">33 - Gironde</option> 
+              <option value="34">34 - Hérault</option> 
+              <option value="35">35 - Ille-et-Vilaine</option> 
+              <option value="36">36 - Indre</option> 
+              <option value="37">37 - Indre-et-Loire</option> 
+              <option value="38">38 - Isère</option> 
+              <option value="39">39 - Jura</option> 
+              <option value="40">40 - Landes</option> 
+              <option value="41">41 - Loir-et-Cher</option> 
+              <option value="42">42 - Loire</option> 
+              <option value="43">43 - Haute-Loire</option> 
+              <option value="44">44 - Loire-Atlantique</option> 
+              <option value="45">45 - Loiret</option> 
+              <option value="46">46 - Lot</option> 
+              <option value="47">47 - Lot-et-Garonne</option> 
+              <option value="48">48 - Lozère</option> 
+              <option value="49">49 - Maine-et-Loire</option> 
+              <option value="50">50 - Manche</option> 
+              <option value="51">51 - Marne</option> 
+              <option value="52">52 - Haute-Marne</option> 
+              <option value="53">53 - Mayenne</option> 
+              <option value="54">54 - Meurthe-et-Moselle</option> 
+              <option value="55">55 - Meuse</option> 
+              <option value="56">56 - Morbihan</option> 
+              <option value="57">57 - Moselle</option> 
+              <option value="58">58 - Nièvre</option> 
+              <option value="59">59 - Nord</option> 
+              <option value="60">60 - Oise</option> 
+              <option value="61">61 - Orne</option> 
+              <option value="62">62 - Pas-de-Calais</option> 
+              <option value="63">63 - Puy-de-Dôme</option> 
+              <option value="64">64 - Pyrénées-Atlantiques</option> 
+              <option value="65">65 - Hautes-Pyrénées</option> 
+              <option value="66">66 - Pyrénées-Orientales</option> 
+              <option value="67">67 - Bas-Rhin</option> 
+              <option value="68">68 - Haut-Rhin</option> 
+              <option value="69">69 - Rhône</option> 
+              <option value="70">70 - Haute-Saône</option> 
+              <option value="71">71 - Saône-et-Loire</option> 
+              <option value="72">72 - Sarthe</option> 
+              <option value="73">73 - Savoie</option> 
+              <option value="74">74 - Haute-Savoie</option> 
+              <option value="75">75 - Paris</option> 
+              <option value="76">76 - Seine-Maritime</option> 
+              <option value="77">77 - Seine-et-Marne</option> 
+              <option value="78">78 - Yvelines</option> 
+              <option value="79">79 - Deux-Sèvres</option> 
+              <option value="80">80 - Somme</option> 
+              <option value="81">81 - Tarn</option> 
+              <option value="82">82 - Tarn-et-Garonne</option> 
+              <option value="83">83 - Var</option> 
+              <option value="84">84 - Vaucluse</option> 
+              <option value="85">85 - Vendée</option> 
+              <option value="86">86 - Vienne</option> 
+              <option value="87">87 - Haute-Vienne</option> 
+              <option value="88">88 - Vosges</option> 
+              <option value="89">89 - Yonne</option> 
+              <option value="90">90 - Territoire de Belfort</option> 
+              <option value="91">91 - Essonne</option> 
+              <option value="92">92 - Hauts-de-Seine</option> 
+              <option value="93">93 - Seine-Saint-Denis</option> 
+              <option value="94">94 - Val-de-Marne</option> 
+              <option value="95">95 - Val-d'Oise</option> 
+              <option value="971">971 - Guadeloupe</option> 
+              <option value="972">972 - Martinique</option> 
+              <option value="973">973 - Guyane</option> 
+              <option value="974">974 - La Réunion</option> 
+              <option value="976">976 - Mayotte</option> 
+            </select>  
+          </div>
+        </div>
+
+        <input tabindex="0" class="col-span-3 w-[60%] mx-auto my-3 py-2 px-4 bg-accents1-light text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"  type="submit" value="Rechercher">
+      </div>
+    </form>
+  </div>
+          
+  {% if animals is empty %}
+    <h3 class="font-grands text-2xl w-full my-2 text-center">Aucun animal ne correspond à votre recherche</h3>
+  {% endif %}
+      
+    <div class="grid grid-flow-row-dense grid-cols-3 gap-3 m-3">
+      {% for animal in animals %}
+        <div class="bg-zoning rounded-lg shadow md:flex-col">
+
+          <div class="relative md:w-full flex justify-center items-center">
+            {% if animal.images_animal is empty %}
+              <img class="font-body rounded-lg" src="/images/animal_empty.webp" alt="Photo à venir">
+            {% else %}
+              <img class="font-body rounded-lg"
+              src="{{ animal.images_animal[0].url}}" alt="Photo de {{ animal.nom }}">           
+            {% endif %}
+          </div>
+
+          <div class="flex-auto text-center">
+            <div class="flex flex-wrap">
+              <h3 class="flex-auto text-xl md:text-3xl font-grands">{{ animal.nom }}</h3>
+              <h4 class="flex-none w-full mt-2 text-xs md:text-xl font-medium text-gray-500">{{ animal.espece.nom }}</h4>
+              <hr>
+              <p class="flex-none w-full mt-2 text-xs md:text-xl font-medium text-gray-500">Age : {{ animal.age }}</p>
+              <p class="flex-none w-full mt-2 text-xs md:text-xl font-medium text-gray-500">Localisation : {{ animal.refuge.code_postal }}</p>
+            </div>
+            <div class="flex text-sm font-medium justify-center">
+              <a class="my-2 bg-accents1-light text-fond w-[90%] transition ease-in duration-200 text-center text-xs md:text-2xl font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="{{ path('animal_details', {'animalId': animal.id }) }}">Découvrir</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+</main>
+
+<!-- Deploy search script here -->
+{% endblock %}
