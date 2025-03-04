@@ -50,9 +50,9 @@ def signin_login(request):
 """ Models needed from here on """
 
 def animal_list(request):
-  animals = Animal.objects.all().values()
-  species = Espece.objects.all().values()
-  tags = Tag.objects.all().values()
+  animals = Animal.objects.all()
+  species = Espece.objects.all()
+  tags = Tag.objects.all()
   template = loader.get_template('animal_list.html')
   context = {
     'animals': animals,
@@ -70,9 +70,9 @@ def animal_details(request, animalId):
   return HttpResponse(template.render(context, request))
 
 def shelter_list(request):
-  shelters = Association.objects.all().values()
-  species = Espece.objects.all().values()
-  tags = Tag.objects.all().values()
+  shelters = Association.objects.all()
+  species = Espece.objects.all()
+  tags = Tag.objects.all()
   template = loader.get_template('shelter_list.html')
   context = {
     'associations': shelters,

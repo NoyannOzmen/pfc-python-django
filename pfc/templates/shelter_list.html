@@ -264,20 +264,16 @@
     </section>
   </div>
 
-  {% if associations is empty %}
-    <h3 class="font-grands text-2xl w-full my-2 text-center">Aucun refuge ne correspond à votre recherche</h3>
-  {% endif %}
-
       <div class="grid grid-cols-3 gap-3 m-3">       
         {% for association in associations %}       
           <div class="bg-zoning rounded-lg shadow flex flex-col">
               
             <div class="relative md:w-full flex justify-center items-center">
-              {% if association.images_association.length %}
-                <img class="font-body rounded-lg" src="{% static '' %}{{ assocation.images_association.url.0 }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
-              {% else %}
+              {% for x in association.images_association.all %}
+                <img class="font-body rounded-lg" src="{% static '' %}{{ x.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
+              {% empty %}
                 <img class="font-body rounded-lg" src="{% static 'images/shelter_empty.webp' %}" alt="Logo de {{ association.nom }} bientôt visible">
-              {% endif %}
+              {% endfor %}
             </div>
 
             <div class="flex text-center flex-col">
@@ -291,6 +287,8 @@
               </div>
             </div>
           </div>
+        {% empty %}
+        <h3 class="font-grands text-2xl w-full my-2 text-center">Aucun refuge ne correspond à votre recherche</h3>
         {% endfor %}
       </div>
           

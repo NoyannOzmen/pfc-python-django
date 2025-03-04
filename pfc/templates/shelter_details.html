@@ -6,11 +6,11 @@
     <h2 class="font-grands text-2xl md:text-3xl text-center w-full my-6">{{ association.nom }}</h3>
 
     <div class="font-body mx-auto w-[80%] rounded-lg my-1 justify-center flex">
-      {% if association.images_association %}
-        <img src="{% static '' %}{{ association.images_association.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
-      {% else %}
-        <img src="/images/shelter_empty.webp" alt="Logo de {{ association.nom }} bientôt visible">
-      {% endif %}
+      {% for x in association.images_association.all %}
+        <img src="{% static '' %}{{ x.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
+      {% empty %}
+        <img src="{% static 'images/shelter_empty.webp' %}" alt="Logo de {{ association.nom }} bientôt visible">
+      {% endfor %}
     </div>
 
     <article class="font-body mx-auto w-[90%] md:w-[60%] bg-zoning rounded-lg shadow my-4">
