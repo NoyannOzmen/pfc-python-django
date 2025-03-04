@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block content %}
 <main class="justify-self-stretch flex-1"></main>
   <h2 class="font-grands text-3xl text-center my-2 pt-5">Création de votre compte</h2>
@@ -88,5 +88,5 @@
   </div>
 </main>
 
-<!-- API script here -->
+<script src="{% static 'js/apiGouv.js' %}"></script>
 {% endblock %}

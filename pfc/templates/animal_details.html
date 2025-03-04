@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block content %}
 <main class="flex flex-wrap flex-col md:flex-row justify-self-stretch flex-1 w-full place-content-evenly 2xl:w-1/2 2xl:self-center">
   <section class="flex flex-col m-4 flex-1 max-[767px]:mx-4 md:ml-6 place-content-evenly">
@@ -104,6 +104,6 @@
 		<!-- Carousel of THREE -->
 
 	</section>
-<!-- Carousel script here -->
+	<script src="{% static 'js/carousel.js' %}"></script>
 </main>
 {% endblock %}

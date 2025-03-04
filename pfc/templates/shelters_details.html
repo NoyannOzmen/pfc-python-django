@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block content %}
 <main class="justify-self-stretch flex-1">
   <section class="flex flex-col mx-auto mt-2">
@@ -41,5 +41,5 @@
 	{% endif %}
 </main>
 
-<!-- Carousel script here -->
+<script src="{% static 'js/carousel.js' %}"></script>
 {% endblock %}

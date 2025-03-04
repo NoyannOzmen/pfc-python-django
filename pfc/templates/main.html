@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block content %}
 <main class="justify-self-stretch flex-1 flex flex-col">
   <section class="flex flex-col h-[80%] bg-right bg-cover bg-unai place-content-center">
@@ -19,5 +19,5 @@
       <!-- Carousel of THREE -->
   </section>
 </main>
-<!-- Carousel script here -->
+<script src="{% static 'js/carousel.js' %}"></script>
 {% endblock %}

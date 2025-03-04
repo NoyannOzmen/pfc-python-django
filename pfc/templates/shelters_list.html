@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% load static %}
 {% block content %}
 <main class="justify-self-stretch flex-1">
   
@@ -296,5 +296,5 @@
           
 </main>
 
-<!-- Deploy search script here -->
+<script src="{% static 'js/deploySearch.js' %}"></script>
 {% endblock %}
