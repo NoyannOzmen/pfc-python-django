@@ -70,7 +70,7 @@ class Animal(models.Model):
       default=Statut.SHELTERED,
   )
   espece = models.ForeignKey(Espece, on_delete=models.CASCADE)
-  refuge = models.ForeignKey(Association, on_delete=models.CASCADE)
+  refuge = models.ForeignKey(Association, related_name='pensionnaires', on_delete=models.CASCADE)
   accueillant = models.ForeignKey(Famille, blank=True, null=True, on_delete=models.CASCADE)
   tags = models.ManyToManyField(Tag, blank=True)
 
@@ -114,14 +114,14 @@ class Utilisateur(models.Model):
           blank=True,
           null=True,
           on_delete=models.CASCADE,
-          related_name="refuge"     
+          related_name="identifiant_association"     
       )
     accueillant  = models.ForeignKey(
         Famille,
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        related_name="accueillant"   
+        related_name="identifiant_famille"   
     )
 
     def __str__(self):

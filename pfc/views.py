@@ -4,7 +4,11 @@ from .models import *
   
 def main(request):
   template = loader.get_template('main.html')
-  return HttpResponse(template.render())
+  animals = Animal.objects.filter(statut="S")
+  context = {
+    'animals': animals
+  }
+  return HttpResponse(template.render(context, request))
   
 def static_about(request):
   template = loader.get_template('static_about.html')
@@ -47,10 +51,8 @@ def signin_login(request):
   template = loader.get_template('signin_login.html')
   return HttpResponse(template.render())
 
-""" Models needed from here on """
-
 def animal_list(request):
-  animals = Animal.objects.all()
+  animals = Animal.objects.filter(statut="S")
   species = Espece.objects.all()
   tags = Tag.objects.all()
   template = loader.get_template('animal_list.html')
@@ -83,9 +85,11 @@ def shelter_list(request):
 
 def shelter_details(request, shelterId):
   shelter = Association.objects.get(id=shelterId)
+  animals = Animal.objects.filter(refuge_id=shelterId)
   template = loader.get_template('shelter_details.html')
   context = {
     'association': shelter,
+    'animals': animals
   }
   return HttpResponse(template.render(context, request))
 
