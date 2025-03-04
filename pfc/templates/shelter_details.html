@@ -7,7 +7,7 @@
 
     <div class="font-body mx-auto w-[80%] rounded-lg my-1 justify-center flex">
       {% if association.images_association %}
-        <img src="{{ association.images_association[0].url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
+        <img src="{% static '' %}{{ association.images_association.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
       {% else %}
         <img src="/images/shelter_empty.webp" alt="Logo de {{ association.nom }} bientôt visible">
       {% endif %}
@@ -38,7 +38,7 @@
       <!-- Carousel of THREE -->
 
   </section>
-	{% endif %}
+  <!-- endif -->
 </main>
 
 <script src="{% static 'js/carousel.js' %}"></script>

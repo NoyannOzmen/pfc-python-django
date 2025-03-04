@@ -6,11 +6,11 @@
 		<h2 class="font-grands text-2xl md:text-3xl text-center w-full my-6">{{ animal.nom }}</h2>
 
 		<div class="font-body mx-auto w-[80%] bg-zoning rounded-lg shadow dark:bg-gray-800 my-4">
-					{% if animal.images_animal is empty %}
-						<img class="mx-auto my-2" src="/images/animal_empty.webp" alt="Photo à venir">
+					{% if animal.images_animal %}
+						<img class="mx-auto my-2"
+						src="{% static '' %}{{ animal.images_animal.url }}" alt="Photo de {{ animal.nom }}"> 
 					{% else %}
-					  <img class="mx-auto my-2"
-            src={{ animal.images_animal[0].url}} alt="Photo de" . {{ animal.nom }}>
+						<img class="mx-auto my-2" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
 					{% endif %}
 		</div>
 
@@ -35,7 +35,7 @@
 			<div class="text-center w-full py-2">
 				<p class="font-body text-texte">Nom : {{ animal.nom }}</p>
 				<p class="font-body text-texte">Age : {{ animal.age }}&nbsp;ans</p>
-				<p class="font-body text-texte">Sexe : {{ animal.sexe }}</p>
+				<p class="font-body text-texte">Sexe : {{ animal.get_sexe_display }}</p>
 			</div>
 			<div class="text-center w-full py-2">
 				<p class="font-body text-texte">Espèce : {{ animal.espece.nom }}</p>
@@ -45,7 +45,7 @@
 				<p class="font-body text-texte">Couleur : {{ animal.couleur }}</p>
 			</div>
 			<div class="text-center w-full py-2">
-				<p class="font-body text-texte">Statut : {{ animal.statut }}</p>
+				<p class="font-body text-texte">Statut : {{ animal.get_statut_display }}</p>
 			</div>
 
 			<div class="text-center w-full py-2">
@@ -53,19 +53,7 @@
 			</div>
 		</article>
 
-		{% if is_granted('ROLE_FOSTER') %}
-			<div class="text-center w-full py-2">
-			{% for message in app.flashes('notice') %}
-          <div class="flash-notice font-grands font-base text-accents1 text-center">
-          {{ message }}
-          </div>
-        {% endfor %}
-					<form method="POST">
-						<button type="submit" class="mx-auto my-3 py-2 px-6 bg-accents1-light text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">Faire une demande</button>
-					</form>
-			</div>
-    {% endif %}
-
+		<!-- Foster request here -->
 	</section>
 	
   <section class="flex flex-col md:my-8 flex-none  md:max-w-[50%] max-[767px]:mx-4 md:mr-6 md:mt-32 py-6">
@@ -76,9 +64,9 @@
 			<div class="font-body mx-auto w-[80%] rounded-lg my-4">
 				{% if animal.refuge.images_association %}
           <img class="mx-auto" 
-            src="{{ animal.refuge.images_association[0].url}}" alt="Logo de {{ animal.refuge.nom }}"">
+            src="{% static '' %}{{ animal.refuge.images_association.0.url }}" alt="Logo de {{ animal.refuge.nom }}"">
         {% else %}
-					<img src="/images/shelter_empty.webp" alt="Logo de {{ animal.refuge.nom }} bientôt visible">
+					<img src="{% static 'images/shelter_empty.webp' %}" alt="Logo de {{ animal.refuge.nom }} bientôt visible">
 				{% endif %}
 			</div>
 
@@ -91,7 +79,7 @@
 			</div>
 				
 			<div class="text-center w-full py-2">
-				<a class="w-[60%] mx-auto my-3 py-2 px-4 bg-accents1-light text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="/associations/{{ animal.refuge.id }}">En savoir plus</a>
+				<a class="w-[60%] mx-auto my-3 py-2 px-4 bg-accents1-light text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="{% url 'shelter_details' shelterId=animal.refuge.id %}">En savoir plus</a>
 			</div>
 		</article>
 	</section>

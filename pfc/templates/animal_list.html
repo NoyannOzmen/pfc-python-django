@@ -188,7 +188,7 @@
           <div class="relative md:w-full flex justify-center items-center">
             {% if animal.images_animal %}
               <img class="font-body rounded-lg"
-              src="{% static '{{ animal.images_animal.url.0 }}' %}" alt="Photo de {{ animal.nom }}">  
+              src="{% static '' %}{{ animal.images_animal.url.0 }}" alt="Photo de {{ animal.nom }}">  
             {% else %}
               <img class="font-body rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
             {% endif %}
@@ -203,7 +203,7 @@
               <p class="flex-none w-full mt-2 text-xs md:text-xl font-medium text-gray-500">Localisation : {{ animal.refuge.code_postal }}</p>
             </div>
             <div class="flex text-sm font-medium justify-center">
-              <a class="my-2 bg-accents1-light text-fond w-[90%] transition ease-in duration-200 text-center text-xs md:text-2xl font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="animaux/{{ animal.id }}">Découvrir</a>
+              <a class="my-2 bg-accents1-light text-fond w-[90%] transition ease-in duration-200 text-center text-xs md:text-2xl font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="{% url 'animal_details' animalId=animal.id %}">Découvrir</a>
             </div>
           </div>
         </div>

@@ -61,8 +61,8 @@ def animal_list(request):
   }
   return HttpResponse(template.render(context, request))
 
-def animal_details(request, id):
-  animal = Animal.objects.get(id=id)
+def animal_details(request, animalId):
+  animal = Animal.objects.get(id=animalId)
   template = loader.get_template('animal_details.html')
   context = {
     'animal': animal,
@@ -75,17 +75,17 @@ def shelter_list(request):
   tags = Tag.objects.all().values()
   template = loader.get_template('shelter_list.html')
   context = {
-    'shelters': shelters,
+    'associations': shelters,
     'especes': species,
     'tags': tags
   }
   return HttpResponse(template.render(context, request))
 
-def shelter_details(request, id):
-  shelter = Association.objects.get(id=id)
+def shelter_details(request, shelterId):
+  shelter = Association.objects.get(id=shelterId)
   template = loader.get_template('shelter_details.html')
   context = {
-    'shelter': shelter,
+    'association': shelter,
   }
   return HttpResponse(template.render(context, request))
 

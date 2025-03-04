@@ -1,13 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class Utilisateur(models.Model):
-  email = models.EmailField(unique=True)
-  password = models.CharField(max_length=255)
-
-  def __str__(self):
-    return f"{self.email}"
-
 class Famille(models.Model):
   prenom = models.CharField(max_length=255, blank=True, null=True)
   nom = models.CharField(max_length=255)
@@ -18,12 +11,6 @@ class Famille(models.Model):
   telephone = models.CharField(max_length=255)
   hebergement = models.CharField(max_length=255)
   terrain = models.CharField(max_length=255, blank=True, null=True)
-
-  identifiant_famille = models.OneToOneField(
-        Utilisateur,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
 
   def __str__(self):
     return f"{self.nom}"
@@ -52,12 +39,6 @@ class Association(models.Model):
   telephone = models.CharField(max_length=255)
   site = models.CharField(max_length=255, blank=True, null=True)
   description = models.CharField(max_length=255, blank=True, null=True)
-
-  identifiant_association = models.OneToOneField(
-        Utilisateur,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
 
   def __str__(self):
     return f"{self.nom}"
@@ -124,3 +105,24 @@ class Demande(models.Model):
   date_fin = models.DateField()
   def __str__(self):
     return f"{self.famille.nom} {self.date_debut}"
+  
+class Utilisateur(models.Model):
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)
+    refuge  = models.ForeignKey(
+          Association,
+          blank=True,
+          null=True,
+          on_delete=models.CASCADE,
+          related_name="refuge"     
+      )
+    accueillant  = models.ForeignKey(
+        Famille,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="accueillant"   
+    )
+
+    def __str__(self):
+      return f"{self.email}"

@@ -4,28 +4,28 @@ from .models import *
 # Register your models here.
 
 class UtilisateurAdmin(admin.ModelAdmin):
-  list_display = ["email"]
+  list_display = ("id", "email", "accueillant", "refuge")
 
 class FamilleAdmin(admin.ModelAdmin):
-  list_display = ("prenom", "nom")
+  list_display = ( "prenom", "nom")
 
 class EspeceAdmin(admin.ModelAdmin):
-  list_display = ["nom"]
+  list_display = ("id", "nom")
 
 class TagAdmin(admin.ModelAdmin):
-  list_display = ("nom", "description")
+  list_display = ("id" ,"nom", "description")
 
 class MediaAdmin(admin.ModelAdmin):
-  list_display = ["id", "url"]
+  list_display = ("id", "url")
 
 class AssociationAdmin(admin.ModelAdmin):
-  list_display = ("nom", "code_postal")
+  list_display = ( "nom", "code_postal")
 
 class AnimalAdmin(admin.ModelAdmin):
-  list_display = ("nom", "age", "sexe")
+  list_display = ("id", "nom", "age", "sexe")
 
 class DemandeAdmin(admin.ModelAdmin):
-  list_display = ("date_debut", "date_fin")
+  list_display = ("id", "date_debut", "date_fin")
 
 admin.site.register(Utilisateur, UtilisateurAdmin)
 admin.site.register(Famille, FamilleAdmin)
