@@ -51,7 +51,7 @@ def signin_login(request):
 
 def animal_list(request):
   animals = Animal.objects.all().values()
-  species = Species.objects.all().values()
+  species = Espece.objects.all().values()
   tags = Tag.objects.all().values()
   template = loader.get_template('animal_list.html')
   context = {
@@ -70,8 +70,8 @@ def animal_details(request, id):
   return HttpResponse(template.render(context, request))
 
 def shelter_list(request):
-  shelters = Shelter.objects.all().values()
-  species = Species.objects.all().values()
+  shelters = Association.objects.all().values()
+  species = Espece.objects.all().values()
   tags = Tag.objects.all().values()
   template = loader.get_template('shelter_list.html')
   context = {
@@ -82,7 +82,7 @@ def shelter_list(request):
   return HttpResponse(template.render(context, request))
 
 def shelter_details(request, id):
-  shelter = Shelter.objects.get(id=id)
+  shelter = Association.objects.get(id=id)
   template = loader.get_template('shelter_details.html')
   context = {
     'shelter': shelter,
