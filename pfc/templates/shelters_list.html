@@ -283,7 +283,7 @@
                 <p class="flex-none w-full mt-2 text-xs md:text-xl font-medium text-gray-500">Localisation : {{ association.code_postal }}&nbsp;{{ association.commune }}</p>
               </div>
               <div class="flex text-sm font-medium justify-center items-end">
-                <a class="my-2 bg-accents1-light text-fond w-[90%] transition ease-in duration-200 text-center text-xs md:text-2xl font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="{% url 'shelter_details' shelterId=association.id %}">En savoir plus</a>
+                <a class="my-2 bg-accents1-light text-fond w-[90%] transition ease-in duration-200 text-center text-xs md:text-2xl font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="{% url 'shelters_details' shelterId=association.id %}">En savoir plus</a>
               </div>
             </div>
           </div>

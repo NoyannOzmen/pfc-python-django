@@ -38,18 +38,7 @@ def static_map(request):
   template = loader.get_template('static_map.html')
   return HttpResponse(template.render())
 
-
-def signin_foster(request):
-  template = loader.get_template('signin_foster.html')
-  return HttpResponse(template.render())
-
-def signin_shelter(request):
-  template = loader.get_template('signin_shelter.html')
-  return HttpResponse(template.render())
-
-def signin_login(request):
-  template = loader.get_template('signin_login.html')
-  return HttpResponse(template.render())
+""" Model-related routes """
 
 def animal_list(request):
   animals = Animal.objects.filter(statut="S")
@@ -71,11 +60,11 @@ def animal_details(request, animalId):
   }
   return HttpResponse(template.render(context, request))
 
-def shelter_list(request):
+def shelters_list(request):
   shelters = Association.objects.all()
   species = Espece.objects.all()
   tags = Tag.objects.all()
-  template = loader.get_template('shelter_list.html')
+  template = loader.get_template('shelters_list.html')
   context = {
     'associations': shelters,
     'especes': species,
@@ -83,14 +72,112 @@ def shelter_list(request):
   }
   return HttpResponse(template.render(context, request))
 
-def shelter_details(request, shelterId):
+def shelters_details(request, shelterId):
   shelter = Association.objects.get(id=shelterId)
   animals = Animal.objects.filter(refuge_id=shelterId)
-  template = loader.get_template('shelter_details.html')
+  template = loader.get_template('shelters_details.html')
   context = {
     'association': shelter,
     'animals': animals
   }
   return HttpResponse(template.render(context, request))
 
-""" Connected routes go here """
+""" Auth-related routes """
+
+def signin_foster(request):
+  template = loader.get_template('signin_foster.html')
+  return HttpResponse(template.render())
+
+def signin_shelter(request):
+  template = loader.get_template('signin_shelter.html')
+  return HttpResponse(template.render())
+
+def signin_login(request):
+  template = loader.get_template('signin_login.html')
+  return HttpResponse(template.render())
+
+""" Foster-related routes
+    Hard-coded for now """
+
+def foster_profile(request):
+  famille = Famille.objects.get(id=1)
+  template = loader.get_template('foster_profile.html')
+  context = {
+    'famille': famille
+  }
+  return HttpResponse(template.render(context, request))
+
+def foster_request(request):
+  famille = Famille.objects.get(id=1)
+  template = loader.get_template('foster_request.html')
+  context = {
+    'famille': famille
+  }
+  return HttpResponse(template.render(context,request))
+
+""" Shelter-related routes
+    Harde-coded for now """
+
+def shelter_profile(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_profile.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_logo(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_logo.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_animal_list(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_animal_list.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_animal_details(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_animal_details.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_animal_fostered(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_animal_fostered.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_animal_create(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_animal_create.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_request_list(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_request_list.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
+
+def shelter_request_details(request):
+  association = Association.objects.get(id=1)
+  template = loader.get_template('shelter_request_details.html')
+  context = {
+    'association': association
+  }
+  return HttpResponse(template.render(context,request))
