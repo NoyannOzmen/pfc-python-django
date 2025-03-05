@@ -29,7 +29,7 @@
         <!-- Flash-like message here -->
         
         <form class="flex flex-col flex-wrap content-center md:w-[60%] justify-center text-texte" action="#" method="POST">
-          
+          {% csrf_token %} 
           <fieldset class="shrink font-body rounded-lg shadow my-2 py-5">
             <legend class="text-center">Mon organisme&nbsp;<span tabindex="0" class="material-symbols-outlined">edit</span></legend>
 

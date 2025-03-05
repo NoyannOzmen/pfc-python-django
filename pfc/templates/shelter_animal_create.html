@@ -28,6 +28,7 @@
         <h3 class="hidden md:inline font-grands text-3xl text-center my-2 pt-5 w-full">Créer un profil animal</h3>
         
         <form class="grid grid-cols-1 my-6 mx-6 justify-center lg:flex-none lg:mx-2 lg:grid lg:grid-cols-3 lg:px-2 xl:grid-cols-3 xl:p-10" name="create_animal" method="POST">
+          {% csrf_token %} 
           <input type="hidden" name="create_animal" value="create_animal">
           <fieldset class="flex flex-wrap justify-center content-start gap-x-4">
             
@@ -130,6 +131,7 @@
       </span>
     </div>
     <form id="create-tags-form" name="create_tag" method="POST">
+      {% csrf_token %} 
       <input type="hidden" name="create_tag" value="create_tag">
       <fieldset class="mb-2">
         <label for="name_tag" class="block text-texte font-grands font-bold text-base">Nom du Tag</label>
