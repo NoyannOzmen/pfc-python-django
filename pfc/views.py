@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 from django.template import loader
 from .models import *
+from django.db.models import Q
+import operator
+from functools import reduce
   
 def main(request):
   template = loader.get_template('main.html')
@@ -44,13 +47,57 @@ def animal_list(request):
   animals = Animal.objects.filter(statut="S")
   species = Espece.objects.all()
   tags = Tag.objects.all()
-  template = loader.get_template('animal_list.html')
-  context = {
-    'animals': animals,
-    'especes': species,
-    'tags': tags
-  }
-  return HttpResponse(template.render(context, request))
+
+  if request.method == 'POST':
+    predicates = [('statut', 'S')]
+    
+    speciesFull = request.POST.get('_especeDropdownFull')
+    speciesSmall = request.POST.get('_especeDropdownSmall')
+    if speciesSmall:
+      species = speciesSmall
+    elif speciesFull:
+      species = speciesFull
+    
+    if species:
+      predicates.append(('espece_id', species))
+
+    sex = request.POST.get('_sexe')
+    if sex:
+      predicates.append(('sexe', sex[0]))
+
+    minAge = request.POST.get('_minAge')
+    if minAge:
+      predicates.append(('age__gte', minAge))
+
+    maxAge = request.POST.get('_maxAge')
+    if maxAge:
+      predicates.append(('age__lte', maxAge))
+
+    tag = request.POST.get('_tag')
+    if tag:
+      predicates.append(~('tags__nom__contains', tag))
+
+    dpt = request.POST.get('_dptSelect')
+    if dpt:
+      predicates.append(('refuge__code_postal__startswith', dpt))
+
+    q_list = [Q(x) for x in predicates]
+
+    searchedAnimals = Animal.objects.filter(reduce(operator.and_, q_list)).values()
+
+    template = loader.get_template('animal_list_results.html')
+    context = {
+      'searchedAnimals': searchedAnimals
+    }
+    return HttpResponse(template.render(context, request))
+  else:
+    template = loader.get_template('animal_list.html')
+    context = {
+      'animals': animals,
+      'especes': species,
+      'tags': tags
+    }
+    return HttpResponse(template.render(context, request))
 
 def animal_details(request, animalId):
   animal = Animal.objects.get(id=animalId)
