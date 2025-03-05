@@ -5,6 +5,7 @@
   
   <div class="md:my-3 flex flex-wrap font-body w-full bg-zoning rounded-lg shadow justify-around">
     <form class="text-texte justify-around" method="POST">
+      {% csrf_token %} 
       <div id="fullSearch" class="mx-2 col-span-3 items-center flex flex-wrap justify-around">
         <h2 class="font-grands text-2xl w-full my-2 text-center">Rechercher un animal</h2>
         <label for="espece-dropdown-small">Par espèce</label>

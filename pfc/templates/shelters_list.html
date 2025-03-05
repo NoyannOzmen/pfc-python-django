@@ -5,6 +5,7 @@
   
   <div class="md:my-3 flex flex-wrap font-body w-full bg-zoning rounded-lg shadow justify-around">
     <form class="text-texte justify-around" method="POST">
+      {% csrf_token %} 
       <div id="fullSearch" class="mx-2 col-span-3 items-center flex flex-wrap justify-around">
         <h2 class="font-grands text-2xl w-full my-2 text-center">Rechercher une association</h2>
         <label for="dpt-select-small">Par département</label>
@@ -270,7 +271,7 @@
               
             <div class="relative md:w-full flex justify-center items-center">
               {% for x in association.images_association.all %}
-                <img class="font-body rounded-lg" src="{% static '' %}{{ x.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
+                <img class="font-body rounded-lg" src="{% static '' %}{{ x.url }}" alt="Logo de {{ association.nom }}">
               {% empty %}
                 <img class="font-body rounded-lg" src="{% static 'images/shelter_empty.webp' %}" alt="Logo de {{ association.nom }} bientôt visible">
               {% endfor %}
