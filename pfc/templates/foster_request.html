@@ -47,7 +47,7 @@
                         <tr class="fold text-sm font-body font-semibold hidden bg bg-fond">                          
                           <td colspan="2">{{ request.animal.refuge.nom }}</td>
                           <td colspan="2">{{ request.date_debut }}</td>
-                          <td colspan="2">{{ request.statut_demande }}</td>
+                          <td colspan="2">{{ request.get_statut_demande_display }}</td>
                         </tr>
                       </tr>
                   {% endfor %}
