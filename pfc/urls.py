@@ -26,6 +26,6 @@ urlpatterns = [
     path("association/profil/animaux/suivi", views.shelter_animal_fostered, name='shelter_animal_fostered'),
     path("association/profil/animaux/nouveau-profil", views.shelter_animal_create, name='shelter_animal_create'),
     path("association/profil/demandes", views.shelter_request_list, name='shelter_request_list'),
-    path("association/profil/demandes/<int:requestId>", views.shelter_request_details, name='shelter_request_details'),
+    path("association/profil/demandes/<int:reqId>", views.shelter_request_details, name='shelter_request_details'),
     path("__reload__/", include("django_browser_reload.urls")),
 ]

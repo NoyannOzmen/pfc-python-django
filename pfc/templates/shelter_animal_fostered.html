@@ -39,7 +39,7 @@
             {% for animal in animals %}
               <tr tabindex="0" class="view  text-fond text-sm bg-accents2 font-grands font-semibold p-3 border-accents2-dark border-solid border-1 hover:bg-accents2-dark">
                 <td class="px-2 pt-2  border-accents2-dark border-solid border-1">{{ animal.nom }}</td>
-                <td class="px-2 pt-2  border-accents2-dark border-solid border-1">{{ animal.famille.nom }}</td>
+                <td class="px-2 pt-2  border-accents2-dark border-solid border-1">{{ animal.accueillant.nom }}</td>
               </tr>
               
               <tr class="fold hidden mb-3 bg-fond rounded-b-lg ">
@@ -91,15 +91,13 @@
                         {% endif %}
                       </div>
                       <div class="flex flex-wrap mt-4 px-6 gap-1">
-                      {% for tag in tags %}
-                        {% if tag.animal.id == animal.id %}
+                      {% for tag in animal.tags.all %}
                           <p class="group rounded-full block bg-accents1 text-fond text-center text-xs font-semibold py-1 px-2">
                                 {{ tag.tags.nom }}
                                 <span class="group-hover:block hidden z-10 bg-accents2-dark text-fond absolute px-2 py-2 text-xs rounded-b-xl rounded-tr-xl">
                                   {{ tag.tags.description }}
                                 </span>
                               </p>
-                        {% endif %}
                       {% endfor %}
                       </div>
                     </div>  
@@ -113,28 +111,28 @@
                       <div class="px-6 mb-3 md:grid-cols-2 md:grid">
                         <div class="mb-2 mt-2">
                           <p class="text-sm italic leading-3">Nom</p>
-                          <p class="text-base font-semibold">{{ animal.famille.nom }}</p>
+                          <p class="text-base font-semibold">{{ animal.accueillant.nom }}</p>
                         </div>
                         <div class="mb-2">
                           <p class="text-sm italic leading-3">Téléphone</p>
-                          <p class="text-base font-semibold">{{ animal.famille.telephone }}</p>
+                          <p class="text-base font-semibold">{{ animal.accueillant.telephone }}</p>
                         </div>
                         <div class="mb-2">
                           <p class="text-sm italic leading-3">e-mail</p>
-                          <p class="text-base font-semibold">{{ animal.famille.utilisateur.email }}</p>
+                          <p class="text-base font-semibold">{{ animal.accueillant.identifiant_famille.email }}</p>
                         </div>
                         <div class="mb-2">
                           <p class="text-sm italic leading-4">Adresse</p>
-                          <p class="text-base font-semibold leading-3">{{ animal.famille.rue }}</p>
-                          <p class="text-base font-semibold ">{{ animal.famille.code_postal }}&nbsp;{{ animal.famille.commune  }}</p>
+                          <p class="text-base font-semibold leading-3">{{ animal.accueillant.rue }}</p>
+                          <p class="text-base font-semibold ">{{ animal.accueillant.code_postal }}&nbsp;{{ animal.accueillant.commune  }}</p>
                         </div>
                         <div class="mb-2">
                           <p class="text-sm italic leading-3">Pays</p>
-                          <p class="text-base font-semibold">{{ animal.famille.pays }}</p>
+                          <p class="text-base font-semibold">{{ animal.accueillant.pays }}</p>
                         </div>
                         <div>
                           <p class="text-sm italic leading-3">Hébergement</p>
-                          <p class="text-base font-semibold">{{ animal.famille.hebergement }}</p>
+                          <p class="text-base font-semibold">{{ animal.accueillant.hebergement }}</p>
                         </div>
                       </div>      
                     </div>

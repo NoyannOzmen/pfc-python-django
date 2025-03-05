@@ -95,7 +95,7 @@ class Demande(models.Model):
     DENIED = "Den", _("Refusée")
   
   famille = models.ForeignKey(Famille, related_name="demandes", on_delete=models.CASCADE)
-  animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
+  animal = models.ForeignKey(Animal, related_name="demandes", on_delete=models.CASCADE)
   statut_demande = models.CharField(
       max_length=3,
       choices=Statut_Demande.choices,

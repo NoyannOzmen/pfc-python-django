@@ -142,42 +142,54 @@ def shelter_animal_list(request):
   }
   return HttpResponse(template.render(context,request))
 
-def shelter_animal_details(request):
+def shelter_animal_details(request, animalId):
   association = Association.objects.get(id=1)
+  animal = Animal.objects.get(id=animalId)
   template = loader.get_template('shelter_animal_details.html')
   context = {
-    'association': association
+    'association': association,
+    'animal': animal
   }
   return HttpResponse(template.render(context,request))
 
 def shelter_animal_fostered(request):
   association = Association.objects.get(id=1)
+  animals = Animal.objects.filter(refuge_id=1, statut="F")
   template = loader.get_template('shelter_animal_fostered.html')
   context = {
-    'association': association
+    'association': association,
+    'animals': animals
   }
   return HttpResponse(template.render(context,request))
 
 def shelter_animal_create(request):
   association = Association.objects.get(id=1)
+  species = Espece.objects.all()
+  tags = Tag.objects.all()
   template = loader.get_template('shelter_animal_create.html')
   context = {
-    'association': association
+    'association': association,
+    'especes': species,
+    'tags': tags,
   }
   return HttpResponse(template.render(context,request))
 
 def shelter_request_list(request):
   association = Association.objects.get(id=1)
+  requestedAnimals = Animal.objects.filter(refuge_id=1, statut='S')
   template = loader.get_template('shelter_request_list.html')
   context = {
-    'association': association
+    'association': association,
+    'requestedAnimals': requestedAnimals
   }
   return HttpResponse(template.render(context,request))
 
-def shelter_request_details(request):
+def shelter_request_details(request, reqId):
   association = Association.objects.get(id=1)
+  req = Demande.objects.get(id=reqId)
   template = loader.get_template('shelter_request_details.html')
   context = {
-    'association': association
+    'association': association,
+    'request': req
   }
   return HttpResponse(template.render(context,request))

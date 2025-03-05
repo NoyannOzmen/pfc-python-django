@@ -77,7 +77,7 @@
         </form>
           
         <div class=" self-center flex flex-wrap p-4 justify-center gap-3.5">            
-            {% for animal in animals %}
+            {% for animal in association.pensionnaires.all %}
               <!-- ANIMAL CARD POUR LE DASHBOARD ASSO -->
               <a data-animalId="{{ animal.id }}" data-nom="{{ animal.nom }}" data-espece="{{ animal.espece.id }}"  data-statut="{{ animal.statut }}" class="animal_card animal_card--visible flex flex-col justify-between content-center relative bg-fond rounded-xl w-36 h-36 shrink-0 md:size-60" href="{% url 'shelter_animal_details' animalId=animal.id %}">
                 {% for x in animal.images_animal.all %}
@@ -90,7 +90,7 @@
                   
                   <div class="w-full flex justify-around content-center">
                     <p class="espece-nom text-xs italic md:text-base"> {{ animal.espece.nom }}</p>
-                    <p class="text-xs italic md:text-base"> {{ animal.statut }}</p>
+                    <p class="text-xs italic md:text-base"> {{ animal.get_statut_display }}</p>
                   </div>
                 </div>
               </a> 

@@ -72,7 +72,7 @@
             
           {% if animal.tags %}
             <div class="flex flex-wrap mt-4 px-6 gap-1">
-              {% for tag in animal.tags %}
+              {% for tag in animal.tags.all %}
                 <p class="group rounded-full block bg-accents1 text-fond text-center text-xs font-semibold py-1 px-2">
                   {{ tag.tags.nom }}
                   <span class="group-hover:block hidden z-10 bg-accents2-dark text-fond absolute px-2 py-2 text-xs rounded-b-xl rounded-tr-xl">
@@ -83,57 +83,47 @@
             </div>
           {% endif %}
 
-          <!-- <div class="font-body mx-auto w-[80%] bg-zoning rounded-lg shadow dark:bg-gray-800 my-4">
-            {{ form_start(form) }}
-              <div class="flex flex-col mx-auto">
-              {{ form_row(form.media, {'attr': {'class': 'flex flex-col justify-center mx-auto'}}) }}
-              </div>
-              <div class="flex justify-center">
-                <div class="flex justify-center hover:bg-accents1-dark rounded-full hover:underline bg-accents1 text-center font-grands text-fond font-semibold text-xs py-0.5 px-4">
-                  {{ form_row(form.save) }}
-                </div>
-              </div>
-            {{ form_end(form) }} -->
+          <!-- Upload form here -->
           </div>   
         </div>
               
         <!-- ACCUEILLANT INFOS -->
-        {% if animal.famille %}
+        {% if animal.accueillant %}
           <div class="w-60 md:w-auto">
             <h3 class="font-body font-bold mb-4">Famille d'accueil</h3>
             
             <div class="px-6 mb-3 md:grid-cols-2 md:grid md:max-w-96">
               <div class="mb-2 mt-2">
                 <p class="text-sm italic leading-3">Nom</p>
-                <p class="text-sm font-semibold">{{ animal.famille.nom }}</p>
+                <p class="text-sm font-semibold">{{ animal.accueillant.nom }}</p>
               </div>
               <div class="mb-2">
                 <p class="text-sm italic leading-3">Téléphone</p>
-                <p class="text-sm font-semibold">{{ animal.famille.telephone }}</p>
+                <p class="text-sm font-semibold">{{ animal.accueillant.telephone }}</p>
               </div>
               <div class="mb-2">
                 <p class="text-sm italic leading-3">e-mail</p>
-                <p class="text-sm font-semibold">{{ animal.famille.utilisateur.email }}</p>
+                <p class="text-sm font-semibold">{{ animal.accueillant.identifiant_famille.email }}</p>
               </div>
               <div class="mb-2">
                 <p class="text-sm italic leading-4">Adresse</p>
-                <p class="text-sm font-semibold leading-3">{{ animal.famille.rue }}</p>
-                <p class="text-sm font-semibold ">{{ animal.famille.code_postal }}&nbsp;{{ animal.famille.commune  }}</p>
+                <p class="text-sm font-semibold leading-3">{{ animal.accueillant.rue }}</p>
+                <p class="text-sm font-semibold ">{{ animal.accueillant.code_postal }}&nbsp;{{ animal.accueillant.commune  }}</p>
               </div>
               <div class="mb-2">
                 <p class="text-sm italic leading-3">Pays</p>
-                <p class="text-sm font-semibold">{{ animal.famille.pays }}</p>
+                <p class="text-sm font-semibold">{{ animal.accueillant.pays }}</p>
               </div>
               <div>
                 <p class="text-sm italic leading-3">Hébergement</p>
-                <p class="text-sm font-semibold">{{ animal.famille.hebergement }}</p>
+                <p class="text-sm font-semibold">{{ animal.accueillant.hebergement }}</p>
               </div>
             </div>
           </div>
         {% endif %}
                 
         <!-- HISTORIQUE DES DEMANDES -->
-        {% if demandes %}  
+        {% if animal.demandes %}  
             <div class="px-4 ">
               <h3 class="font-body font-bold mb-4">Historique des demandes d'accueil</h3>
               
@@ -144,11 +134,11 @@
                   <th class="px-2 pt-2  border-accents2-light border-solid border-1 text-center">Statut</th>
                 </thead>
                 <tbody class="rounded-lg border-separate ">
-                  {% for demande in demandes %}
+                  {% for demande in animal.demandes.all %}
                     <tr class="odd:bg-accents2-light even:bg-fond odd:text-fond text-sm font-body font-semibold p-4 rounded-lg ">
-                      <td class="text-center p-2 rounded-lg ">{{ demande.potentiel_accueillant.nom }}</td>
+                      <td class="text-center p-2 rounded-lg ">{{ demande.famille.nom }}</td>
                       <td class="text-center p-2 rounded-lg ">{{ demande.date_debut }}</td>
-                      <td class="text-center p-2 rounded-lg hover:underline"><a href="{% url 'shelter_request_details' requestId=demande.id %}">{{ demande.statut_demande }}</a></td>
+                      <td class="text-center p-2 rounded-lg hover:underline"><a href="{% url 'shelter_request_details' reqId=demande.id %}">{{ demande.get_statut_demande_display }}</a></td>
                     </tr>
                   {% endfor %}
                 </tbody>
