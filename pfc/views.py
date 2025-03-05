@@ -188,6 +188,33 @@ def foster_profile(request):
   context = {
     'famille': famille
   }
+
+  if request.method == 'POST':
+    last_name = request.POST.get('_nom')
+    first_name = request.POST.get('_prenom')
+    hebergement = request.POST.get('_hebergement')
+    terrain = request.POST.get('_terrain')
+    rue = request.POST.get('_rue')
+    commune = request.POST.get('_commune')
+    code_postal = request.POST.get('_code_postal')
+
+    if last_name:
+      famille.nom = last_name
+    if first_name:
+      famille.prenom = first_name
+    if hebergement:
+      famille.hebergement = hebergement
+    if terrain:
+      famille.terrain = terrain
+    if rue:
+      famille.rue = rue
+    if commune:
+      famille.commune = commune
+    if code_postal:
+      famille.code_postal = code_postal
+
+    famille.save()
+
   return HttpResponse(template.render(context, request))
 
 def foster_request(request):
@@ -207,6 +234,42 @@ def shelter_profile(request):
   context = {
     'association': association
   }
+
+  if request.method == 'POST':
+    name = request.POST.get('_nom')
+    owner = request.POST.get('_president')
+    rue = request.POST.get('_rue')
+    commune = request.POST.get('_commune')
+    code_postal = request.POST.get('_code_postal')
+    pays = request.POST.get('_pays')
+    telephone = request.POST.get('_telephone')
+    siret = request.POST.get('_siret')
+    site = request.POST.get('_site')
+    description = request.POST.get('_description')
+
+    if name:
+      association.nom = name
+    if owner:
+      association.responsable = owner
+    if rue:
+      association.rue = rue
+    if commune:
+      association.commune = commune
+    if code_postal:
+      association.code_postal = code_postal
+    if pays:
+      association.pays = pays
+    if telephone:
+      association.telephone = telephone
+    if siret:
+      association.siret = siret
+    if site:
+      association.site = site
+    if description:
+      association.description = description
+
+    association.save()
+  
   return HttpResponse(template.render(context,request))
 
 def shelter_logo(request):
