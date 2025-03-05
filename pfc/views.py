@@ -8,7 +8,7 @@ def main(request):
   context = {
     'animals': animals
   }
-  return HttpResponse(template.render(context, request))
+  return HttpResponse(template.render(context))
   
 def static_about(request):
   template = loader.get_template('static_about.html')

@@ -20,7 +20,31 @@
 
       <nav class="rounded-br-lg md:rounded-b-lg flex-auto  bg-accents2-dark text-fond p-3 text-base md:text-lg md:mr-4">
         <ul class="flex flex-col md:flex-row flex-nowrap justify-around">
-          <!-- Login Navigation -->     
+          <!-- Login Navigation -->    
+          {% if user.is_authenticated %}
+            {% if user.refuge %}
+              <li class="border-2 border-accents2-dark max-[767px]:border-b-fond md:mr-4 md:border-r-fond px-4 max-[767px]:pb-2 place-self-center md:place-self-start pl-2">
+                <a href="/association/profil">Bonjour : {{ user.refuge.nom }}</a>
+              </li>
+              <li class="border-2 border-accents2-dark mr-0 max-[767px]:border-b-fond  md:border-r-fond px-4 pr-6 max-[767px]:pb-2 place-self-center md:place-self-start">
+                <a tabindex=0 class="hover:text-accents1-light" href="/association/profil/animaux">Tableau de&nbsp;bord</a>
+              </li>
+            {% elif user.accueillant %}
+              <li class="border-2 border-accents2-dark max-[767px]:border-b-fond md:mr-4 md:border-r-fond px-4 max-[767px]:pb-2 place-self-center md:place-self-start pl-2">
+                {% if user.accueillant.prenom %}
+                  <a href="/famille/profil"> Bonjour : {{ user.accueillant.prenom }}</a>
+                {% else %}
+                  <a href="/famille/profil">Bonjour : {{ user.accueillant.nom }}</a>
+                {% endif %}
+              </li>
+              <li class="border-2 border-accents2-dark mr-0 max-[767px]:border-b-fond  md:border-r-fond px-4 pr-6 max-[767px]:pb-2 place-self-center md:place-self-start">
+                <a tabindex=0 class="hover:text-accents1-light" href="/famille/profil">Tableau de&nbsp;bord</a>
+              </li>
+            {% endif %}
+              <li id="log-out" class="border-2 border-accents2-dark place-self-center md:place-self-start pl-2">
+                <a href="/deconnexion" class="hover:text-accents1-light">Se Déconnecter</a>
+              </li>
+          {% else %} 
             <li id="log-in" class="border-2 border-accents2-dark max-[767px]:border-b-fond md:mr-4 md:border-r-fond px-4 max-[767px]:pb-2 place-self-center md:place-self-start pl-2">
               <a href="/connexion" class="hover:text-accents1-light">Se Connecter</a>
             </li>
@@ -39,6 +63,7 @@
                 </li>
               </ul>
             </li>
+          {% endif %}
         </ul>           
       </nav>
                 
