@@ -54,12 +54,10 @@ def animal_list(request):
     speciesFull = request.POST.get('_especeDropdownFull')
     speciesSmall = request.POST.get('_especeDropdownSmall')
     if speciesSmall:
-      species = speciesSmall
-    elif speciesFull:
-      species = speciesFull
+      predicates.append(('espece_id', speciesSmall))
     
-    if species:
-      predicates.append(('espece_id', species))
+    if speciesFull:
+      predicates.append(('espece_id', speciesFull))
 
     sex = request.POST.get('_sexe')
     if sex:
@@ -73,15 +71,18 @@ def animal_list(request):
     if maxAge:
       predicates.append(('age__lte', maxAge))
 
-    tag = request.POST.get('_tag')
+    tag = request.POST.getlist('_tag')
     if tag:
-      predicates.append(~('tags__nom__contains', tag))
+      exclusion = []
+      for x in tag:
+        exclusion.append(('tags__nom__contains', x))
 
     dpt = request.POST.get('_dptSelect')
     if dpt:
       predicates.append(('refuge__code_postal__startswith', dpt))
 
     q_list = [Q(x) for x in predicates]
+    q_list += [~Q(y) for y in exclusion]
 
     searchedAnimals = Animal.objects.filter(reduce(operator.and_, q_list)).values()
 
@@ -111,13 +112,48 @@ def shelters_list(request):
   shelters = Association.objects.all()
   species = Espece.objects.all()
   tags = Tag.objects.all()
-  template = loader.get_template('shelters_list.html')
-  context = {
-    'associations': shelters,
-    'especes': species,
-    'tags': tags
-  }
-  return HttpResponse(template.render(context, request))
+
+  if request.method == 'POST':
+    predicates = []
+
+    dptFull = request.POST.get('_dptSelectFull')
+    dptSmall = request.POST.get('_dptSelectSmall')
+    if dptSmall:
+      predicates.append(('code_postal__startswith', dptSmall))
+    
+    if dptFull:
+      predicates.append(('code_postal__startswith', dptFull))
+
+    name = request.POST.get('_shelterNom')
+
+    if name:
+      predicates.append(('nom__icontains', name))
+
+    residentSpecies = request.POST.getlist('_espece')
+
+    if residentSpecies:
+      predicates.append(('pensionnaires__espece__nom__contains', residentSpecies))
+
+    #! Add check to exclude unavailable animals
+
+    q_list = [Q(x) for x in predicates]
+
+    searchedShelters = Association.objects.filter(reduce(operator.and_, q_list)).values()
+
+    template = loader.get_template('shelters_list_results.html')
+    context = {
+      'searchedShelters': searchedShelters
+    }
+    return HttpResponse(template.render(context, request))
+
+  else:
+    template = loader.get_template('shelters_list.html')
+    context = {
+      'associations': shelters,
+      'especes': species,
+      'tags': tags
+    }
+    return HttpResponse(template.render(context, request))
 
 def shelters_details(request, shelterId):
   shelter = Association.objects.get(id=shelterId)
