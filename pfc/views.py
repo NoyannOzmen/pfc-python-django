@@ -342,7 +342,6 @@ def signin_login(request):
       elif user.refuge:
         request.session["shelter_id"] = user.refuge.id
         request.session["user_nom"] = user.refuge.nom
-      return HttpResponse(template.render())
 
   context = {}
   return HttpResponse(template.render(context, request))
@@ -353,7 +352,6 @@ def signin_logout(request):
 
 # Foster-related routes
 
-@login_required
 def foster_profile(request):
   foster_id = request.session["foster_id"]
 
@@ -412,7 +410,6 @@ def foster_profile(request):
 
   return HttpResponse(template.render(context, request))
 
-@login_required
 def foster_request(request):
   foster_id = request.session["foster_id"]
 
@@ -428,7 +425,6 @@ def foster_request(request):
 
 # Shelter-related routes
 
-@login_required
 def shelter_profile(request):
   shelter_id = request.session["shelter_id"]
 
@@ -492,7 +488,6 @@ def shelter_profile(request):
 
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_logo(request):
   shelter_id = request.session["shelter_id"]
 
@@ -506,7 +501,6 @@ def shelter_logo(request):
   }
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_animal_list(request):
   shelter_id = request.session["shelter_id"]
 
@@ -520,7 +514,6 @@ def shelter_animal_list(request):
   }
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_animal_details(request, animalId):
   shelter_id = request.session["shelter_id"]
 
@@ -536,7 +529,6 @@ def shelter_animal_details(request, animalId):
   }
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_animal_fostered(request):
   shelter_id = request.session["shelter_id"]
 
@@ -552,7 +544,6 @@ def shelter_animal_fostered(request):
   }
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_animal_create(request):
   shelter_id = request.session["shelter_id"]
   
@@ -603,7 +594,6 @@ def shelter_animal_create(request):
 
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_request_list(request):
   shelter_id = request.session["shelter_id"]
 
@@ -619,7 +609,6 @@ def shelter_request_list(request):
   }
   return HttpResponse(template.render(context,request))
 
-@login_required
 def shelter_request_details(request, reqId):
   shelter_id = request.session["shelter_id"]
 
