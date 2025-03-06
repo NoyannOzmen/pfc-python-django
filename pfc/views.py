@@ -4,6 +4,8 @@ from .models import *
 from django.db.models import Q
 import operator
 from functools import reduce
+from datetime import date
+from dateutil.relativedelta import relativedelta
   
 def main(request):
   template = loader.get_template('main.html')
@@ -106,6 +108,21 @@ def animal_details(request, animalId):
   context = {
     'animal': animal,
   }
+
+  if request.method == 'POST':
+    famille = Famille.objects.get(id=1)
+    #! Remove hardcoded value before prod
+    start_date = date.today()
+    end_date = start_date + relativedelta(years=1)
+
+    try:
+      requested = Demande.objects.get(famille=famille, animal=animal)
+      context['error'] = 'Vous avez déjà effectué une demande pour cette animal'
+    except :
+      newRequest = Demande(famille=famille, animal=animal, date_debut=start_date, date_fin=end_date)
+      newRequest.save()
+      context['message'] = 'Votre demande a bien été prise en compte !'
+    
   return HttpResponse(template.render(context, request))
 
 def shelters_list(request):
@@ -373,4 +390,16 @@ def shelter_request_details(request, reqId):
     'association': association,
     'request': req
   }
+
+  if request.method == 'POST':
+    accept_request = request.POST.get('accept_request')
+    deny_request = request.POST.get('deny_request')
+
+    if accept_request:
+      req.statut_demande = "A"
+      req.save()
+    if deny_request:
+      req.statut_demande = "D"
+      req.save()
+
   return HttpResponse(template.render(context,request))

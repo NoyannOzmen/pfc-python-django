@@ -31,4 +31,4 @@ Pour réaliser cette application, nous nous sommes servis de :
 | pip | Gestionnaire de packages |
 | PostgreSQL | Base de données |
 | Tailwind | CSS |
-| Django-Tailwind | Package |
+| Django-Tailwind | CSS Helper package |
