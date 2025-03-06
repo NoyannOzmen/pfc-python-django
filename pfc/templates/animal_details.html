@@ -8,7 +8,7 @@
 		<div class="font-body mx-auto w-[80%] bg-zoning rounded-lg shadow dark:bg-gray-800 my-4">
 					{% for x in animal.images_animal.all %}
 						<img class="mx-auto my-2"
-						src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}"> 
+						src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}"> 
 					{% empty %}
 						<img class="mx-auto my-2" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
 					{% endfor %}
@@ -114,7 +114,7 @@
 							<div class="w-full md:w-full flex justify-center items-center">
 								{% for x in animal.images_animal.all %}
 									<img class="object-contain md:h-full rounded-lg"
-								src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
+									src="/upload/{{ x.url }}"" alt="Photo de {{ animal.nom }}">                  
 								{% empty %}
 								<img class="object-contain md:h-full rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
 								{% endfor %}
@@ -164,7 +164,7 @@
 							<div class="w-full md:w-full flex justify-center items-center">
                 {% for x in animal.images_animal.all %}
                   <img class="object-contain w-[80%] h-48 md:h-full rounded-lg"
-                  src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
+                  src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
                 {% empty %}
                   <img class="object-contain w-[80%] h-48 md:h-full rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
                 {% endfor %}

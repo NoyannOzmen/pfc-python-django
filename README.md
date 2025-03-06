@@ -32,3 +32,5 @@ Pour réaliser cette application, nous nous sommes servis de :
 | PostgreSQL | Base de données |
 | Tailwind | CSS |
 | Django-Tailwind | CSS Helper package |
+| Pillow | Image upload package |
+| bCrypt | Hashing |

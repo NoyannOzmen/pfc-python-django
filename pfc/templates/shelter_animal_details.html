@@ -33,7 +33,7 @@
           <div class="flex p-6 pb-4">
             <div class="flex flex-col gap-2">
               {% for x in animal.images_animal.all %}
-                <img class="w-28 rounded-lg" src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">
+                <img class="w-28 rounded-lg" src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">
               {% empty %}
               <img class="w-28 rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
               {% endfor %}
@@ -83,7 +83,17 @@
             </div>
           {% endif %}
 
-          <!-- Upload form here -->
+          <div class="font-body mx-auto w-[80%] bg-zoning rounded-lg shadow dark:bg-gray-800 my-4">
+            <form class="self-center" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+              <div class="flex flex-col mx-auto">
+              {{ form.as_p }}
+              </div>
+              <div class="flex justify-center">
+                <input type="submit" value="Importer" class="my-3 py-2 px-4 mx-auto bg-accents2-dark text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"/>
+              </div>
+            </form>
+          </div> 
           </div>   
         </div>
               

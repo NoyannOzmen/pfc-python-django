@@ -7,7 +7,7 @@
 
     <div class="font-body mx-auto w-[80%] rounded-lg my-1 justify-center flex">
       {% for x in association.images_association.all %}
-        <img src="{% static '' %}{{ x.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
+        <img src="/upload/{{ x.url }}" class="rounded-lg"  alt="Logo de {{ association.nom }}">
       {% empty %}
         <img src="{% static 'images/shelter_empty.webp' %}" alt="Logo de {{ association.nom }} bientôt visible">
       {% endfor %}
@@ -48,7 +48,7 @@
               <div class="w-full md:w-full flex justify-center items-center">
                 {% for x in animal.images_animal.all %}
                   <img class="object-contain md:h-full rounded-lg"
-                  src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">
+                  src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">
                 {% empty %}
                   <img class="object-contain md:h-full rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
                 {% endfor %}
@@ -98,7 +98,7 @@
               <div class="w-6 md:w-full flex justify-center items-center">
                 {% for x in animal.images_animal.all %}
                   <img class="object-contain w-[80%] h-48 md:h-full rounded-lg"
-                  src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
+                  src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
                 {% empty %}
                   <img class="object-contain w-[80%] h-48 md:h-full rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
                 {% endfor %}

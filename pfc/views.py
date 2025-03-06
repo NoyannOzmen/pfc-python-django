@@ -11,6 +11,7 @@ from django.contrib import messages
 import bcrypt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from .forms import ImageForm
   
 def main(request):
   template = loader.get_template('main.html')
@@ -505,7 +506,19 @@ def shelter_logo(request):
   context = {
     'association': association
   }
-  return HttpResponse(template.render(context,request))
+
+  if request.method == 'POST':
+    form = ImageForm(request.POST, request.FILES)
+    context['form'] = form
+    if form.is_valid():
+      form.save()
+      return render(request, 'shelter_logo.html', context)
+  else:
+    form = ImageForm()
+    form.fields["ordre"].initial = 1
+    form.fields["association"].initial = shelter_id
+    context['form'] = form
+    return render(request, 'shelter_logo.html', context)
 
 @login_required
 def shelter_animal_list(request):
@@ -535,7 +548,19 @@ def shelter_animal_details(request, animalId):
     'association': association,
     'animal': animal
   }
-  return HttpResponse(template.render(context,request))
+
+  if request.method == 'POST':
+    form = ImageForm(request.POST, request.FILES)
+    context['form'] = form
+    if form.is_valid():
+      form.save()
+      return render(request, 'shelter_animal_details.html', context)
+  else:
+    form = ImageForm()
+    form.fields["ordre"].initial = 1
+    form.fields["animal"].initial = animal.id
+    context['form'] = form
+    return render(request, 'shelter_animal_details.html', context)
 
 @login_required
 def shelter_animal_fostered(request):

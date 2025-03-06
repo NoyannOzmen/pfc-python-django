@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os.path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -161,3 +162,10 @@ TAILWIND_APP_NAME = 'theme'
 LOGIN_URL = '/connexion'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# Base url to serve media files
+
+MEDIA_URL = '/upload/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
