@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
 from .models import *
 from django.db.models import Q
@@ -6,6 +7,8 @@ import operator
 from functools import reduce
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
   
 def main(request):
   template = loader.get_template('main.html')
@@ -186,7 +189,60 @@ def shelters_details(request, shelterId):
 
 def signin_foster(request):
   template = loader.get_template('signin_foster.html')
-  return HttpResponse(template.render())
+
+  if request.method == 'POST':
+    last_name = request.POST.get('_nom')
+    first_name = request.POST.get('_prenom')
+    telephone = request.POST.get('_telephone')
+    hebergement = request.POST.get('_hebergement')
+    terrain = request.POST.get('_terrain')
+    rue = request.POST.get('_rue')
+    commune = request.POST.get('_commune')
+    code_postal = request.POST.get('_code_postal')
+    pays = request.POST.get('_pays')
+    email = request.POST.get('_email')
+    password = request.POST.get('_password')
+    confirmation = request.POST.get('_confirmation')
+
+    user = Utilisateur.objects.filter(email=email)
+
+    if user.exists():
+      messages.info(request, "Invalid credentials")
+      return HttpResponse(template.render())
+    
+    if not password == confirmation:
+      messages.info(request, "Please make sure your password is correct in both fields")
+      return HttpResponse(template.render())
+    
+    user = Utilisateur(email=email, password=password)
+    user.save()
+    print(user)
+
+    foster = Famille(
+      prenom=first_name,
+      nom=last_name,
+      telephone=telephone,
+      hebergement=hebergement,
+      rue=rue,
+      commune=commune,
+      code_postal=code_postal,
+      pays=pays
+    )
+
+    if terrain:
+      foster.terrain = terrain
+
+    foster.save()
+    print(foster)
+    user.accueillant=foster
+    user.save()
+    print(user)
+
+    messages.info(request, "Account created Successfully!")
+    return redirect('/')
+  
+  context = {}
+  return HttpResponse(template.render(context, request))
 
 def signin_shelter(request):
   template = loader.get_template('signin_shelter.html')
@@ -194,7 +250,29 @@ def signin_shelter(request):
 
 def signin_login(request):
   template = loader.get_template('signin_login.html')
-  return HttpResponse(template.render())
+
+  if request.method == "POST":
+    email = request.POST.get('_email')
+    password = request.POST.get('_password')
+
+    if not Utilisateur.objects.filter(email=email).exists():
+      messages.error(request, 'Invalid credentials')
+      return HttpResponse(template.render())
+    
+    user = authenticate(email=email, password=password)
+
+    if user is None:
+      messages.error(request, 'Invalid credentials')
+      return HttpResponse(template.render())
+    else:
+      login(request, user)
+      print(user)
+      context = {'user' : user }
+      t = loader.get_template('main.html')
+      return HttpResponse(t.render(context, request))
+
+  context = {}  
+  return HttpResponse(template.render(context, request))
 
 """ Foster-related routes
     Hard-coded for now """

@@ -7,8 +7,15 @@
   <div class="font-body mx-auto w-[80%] bg-zoning rounded-lg shadow my-4 py-6">
 
     <form class="flex flex-col flex-wrap content-center justify-around text-texte" action="#" method="POST">
-      <!-- Flash-like message here -->
-
+      {% if messages %}
+        <div class="alert alert-primary" role="alert">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+      {% endif %} 
+      
+      {% csrf_token %}
       <fieldset class="font-body rounded-lg shadow my-2 py-5">
         <legend class="font-bold text-lg font-grands text-center">Vos informations</legend>
         <div class="mx-auto p-2">        

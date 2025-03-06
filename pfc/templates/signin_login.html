@@ -4,13 +4,22 @@
 <main class="justify-self-stretch flex-1"></main>
 	<h2 class="font-grands text-3xl text-center my-2 pt-10">Connexion</h2>
 
+	{% if messages %}
+		<div class="alert alert-primary" role="alert">
+				{% for message in messages %}
+				{{ message }}
+				{% endfor %}
+		</div>
+	{% endif %}
+
 	<section class="pt-10">
 		<div class="font-body mx-auto w-[80%] md:w-[60%] bg-zoning rounded-lg shadow dark:bg-gray-800">
 
 			<form class="flex flex-col flex-wrap justify-around text-texte" action="#" method="POST">
+				{% csrf_token %}
 				<div class="mx-auto p-2 w-[60%]">
 					<label class="text-center" for="email">Votre e-mail</label>
-					<input class="block bg-fond w-full" type="email" placeholder="jo.jo@morioh.io" name="_username" id="email" autocomplete="email" value="{{ last_username }}" required/>
+					<input class="block bg-fond w-full" type="email" placeholder="jo.jo@morioh.io" name="_email" id="email" autocomplete="email" value="{{ last_username }}" required/>
 				</div>
 				<div class="mx-auto p-2 w-[60%]">
 					<label class="text-center" for="password">Votre mot de passe</label>
