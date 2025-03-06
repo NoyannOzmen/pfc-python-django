@@ -133,9 +133,13 @@
           <h4 class="font-body font-bold text-center">Statut de la demande :</h4>
           <p id="request-status" class="font-body text-center">{{ request.get_statut_demande_display }}</p>
           <form class="w-[80%] md:w-[20%]" action="#" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="accept_request" value="accept_request">
             <button type="submit" class="bg-accents1 w-full m-3 py-2 px-4 text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">Accepter</button>
           </form>
           <form class="w-[80%] md:w-[20%]" action="#" method="POST">
+            {% csrf_token %} 
+            <input type="hidden" name="deny_request" value="deny_request">
             <button type="submit" class="bg-accents2-dark w-full m-3 py-2 px-4 text-fond transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">Refuser</button>
           </form>
         </div>
