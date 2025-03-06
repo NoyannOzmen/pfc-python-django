@@ -396,10 +396,10 @@ def shelter_request_details(request, reqId):
     deny_request = request.POST.get('deny_request')
 
     if accept_request:
-      req.statut_demande = "A"
+      req.statut_demande = "Acc"
       req.save()
     if deny_request:
-      req.statut_demande = "D"
+      req.statut_demande = "Den"
       req.save()
 
   return HttpResponse(template.render(context,request))
