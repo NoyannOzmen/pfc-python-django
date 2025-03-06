@@ -8,7 +8,7 @@ from functools import reduce
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+import bcrypt 
   
 def main(request):
   template = loader.get_template('main.html')
@@ -214,7 +214,12 @@ def signin_foster(request):
       messages.info(request, "Please make sure your password is correct in both fields")
       return HttpResponse(template.render())
     
-    user = Utilisateur(email=email, password=password)
+    bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hash = bcrypt.hashpw(bytes, salt)
+    string_password = hash.decode('utf8')
+
+    user = Utilisateur(email=email, password=string_password)
     user.save()
 
     foster = Famille(
@@ -269,7 +274,12 @@ def signin_shelter(request):
       messages.info(request, "Please make sure your password is correct in both fields")
       return HttpResponse(template.render())
     
-    user = Utilisateur(email=email, password=password)
+    bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hash = bcrypt.hashpw(bytes, salt)
+    string_password = hash.decode('utf8')
+    
+    user = Utilisateur.ojects.create_user(email=email, password=string_password)
     user.save()
 
     shelter = Association(
@@ -304,24 +314,28 @@ def signin_login(request):
 
   if request.method == "POST":
     email = request.POST.get('_email')
-    password = request.POST.get('_password')
+    userPassword = request.POST.get('_password')
 
     if not Utilisateur.objects.filter(email=email).exists():
       messages.error(request, 'Invalid credentials')
-      return HttpResponse(template.render())
-    
-    user = Utilisateur.objects.get(email=email, password=password)
-    request.session["isLoggedIn"] = True
-    request.session["user_id"] = user.id
-    if user.accueillant:
-      request.session["foster_id"] = user.accueillant.id
-    if user.refuge:
-      request.session["shelter_id"] = user.refuge.id
+      return HttpResponse(template.render()) 
+   
+    user = Utilisateur.objects.get(email=email)
+    hash = user.password.encode('utf-8')
+    bytes = userPassword.encode('utf-8')
+    result = bcrypt.checkpw(bytes, hash)
+    print(result)
 
-    if user is None:
+    if user is None or result is False:
       messages.error(request, 'Invalid credentials')
       return render(request, 'signin_login.html')
     else:
+      request.session["isLoggedIn"] = True
+      request.session["user_id"] = user.id
+      if user.accueillant:
+        request.session["foster_id"] = user.accueillant.id
+      if user.refuge:
+        request.session["shelter_id"] = user.refuge.id
       return HttpResponse(template.render({'user' : user }, request))
 
   context = {}
