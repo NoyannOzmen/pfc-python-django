@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 import bcrypt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
   
 def main(request):
   template = loader.get_template('main.html')
@@ -332,6 +333,7 @@ def signin_login(request):
       messages.error(request, 'Invalid credentials')
       return render(request, 'signin_login.html')
     else:
+      login(request,user)
       request.session["isLoggedIn"] = True
       request.session["user_id"] = user.id
       if user.accueillant:
@@ -352,11 +354,12 @@ def signin_logout(request):
 
 # Foster-related routes
 
+@login_required
 def foster_profile(request):
-  foster_id = request.session["foster_id"]
+  foster_id = request.session.get("foster_id")
 
   if foster_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   famille = Famille.objects.get(id=foster_id)
   template = loader.get_template('foster_profile.html')
@@ -410,11 +413,12 @@ def foster_profile(request):
 
   return HttpResponse(template.render(context, request))
 
+@login_required
 def foster_request(request):
-  foster_id = request.session["foster_id"]
+  foster_id = request.session.get("foster_id")
 
   if foster_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   famille = Famille.objects.get(id=foster_id)
   template = loader.get_template('foster_request.html')
@@ -425,11 +429,12 @@ def foster_request(request):
 
 # Shelter-related routes
 
+@login_required
 def shelter_profile(request):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   template = loader.get_template('shelter_profile.html')
@@ -488,11 +493,12 @@ def shelter_profile(request):
 
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_logo(request):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   template = loader.get_template('shelter_logo.html')
@@ -501,11 +507,12 @@ def shelter_logo(request):
   }
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_animal_list(request):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   template = loader.get_template('shelter_animal_list.html')
@@ -514,11 +521,12 @@ def shelter_animal_list(request):
   }
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_animal_details(request, animalId):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   animal = Animal.objects.get(id=animalId)
@@ -529,11 +537,12 @@ def shelter_animal_details(request, animalId):
   }
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_animal_fostered(request):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   animals = Animal.objects.filter(refuge_id=1, statut="F")
@@ -544,11 +553,12 @@ def shelter_animal_fostered(request):
   }
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_animal_create(request):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
   
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   species = Espece.objects.all()
@@ -594,11 +604,12 @@ def shelter_animal_create(request):
 
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_request_list(request):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   requestedAnimals = Animal.objects.filter(refuge_id=shelter_id, statut='S')
@@ -609,11 +620,12 @@ def shelter_request_list(request):
   }
   return HttpResponse(template.render(context,request))
 
+@login_required
 def shelter_request_details(request, reqId):
-  shelter_id = request.session["shelter_id"]
+  shelter_id = request.session.get("shelter_id")
 
   if shelter_id is None:
-    return redirect(request, 'main.html')
+    return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
   req = Demande.objects.get(id=reqId)
