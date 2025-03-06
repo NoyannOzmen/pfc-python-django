@@ -23,10 +23,8 @@
           
           <div class="row w-full text-center my-6">
             <div class="col w-full text-center my-6">
-              {% if famille.demandes is empty %}
-                <h4 class="w-full text-center font-grands text-2xl my-4">Pas de demandes d'accueil en attente</h4>
-              {% else %}
-                <h4 class="w-full text-center font-grands text-2xl my-4">Demandes en cours</h4>
+              {% if famille.demandes %}
+              <h4 class="w-full text-center font-grands text-2xl my-4">Demandes en cours</h4>
               
                 <table class="table text-center w-full">
                   <tr class="border-none bg-zoning text-sm font-grands">
@@ -51,7 +49,9 @@
                         </tr>
                       </tr>
                   {% endfor %}
-                </table> 
+                </table>
+              {% else %}
+                <h4 class="w-full text-center font-grands text-2xl my-4">Pas de demandes d'accueil en attente</h4>
               {% endif %}                 
             </div>
           </div>

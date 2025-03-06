@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractBaseUser
 
 class Famille(models.Model):
   prenom = models.CharField(max_length=255, blank=True, null=True)
@@ -106,23 +107,29 @@ class Demande(models.Model):
   def __str__(self):
     return f"{self.famille.nom} {self.date_debut}"
   
-class Utilisateur(models.Model):
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-    refuge  = models.ForeignKey(
-          Association,
-          blank=True,
-          null=True,
-          on_delete=models.CASCADE,
-          related_name="identifiant_association"     
-      )
-    accueillant  = models.ForeignKey(
-        Famille,
+class Utilisateur(AbstractBaseUser):
+
+  email = models.EmailField(unique=True)
+  password = models.CharField(max_length=255, unique=True)
+  refuge  = models.ForeignKey(
+        Association,
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        related_name="identifiant_famille"   
+        related_name="identifiant_association"     
     )
+  accueillant  = models.ForeignKey(
+      Famille,
+      blank=True,
+      null=True,
+      on_delete=models.CASCADE,
+      related_name="identifiant_famille"   
+  )
+  last_login = None
+  USERNAME_FIELD = 'email'
 
-    def __str__(self):
-      return f"{self.email}"
+  def __str__(self):
+    return f"{self.email}"
+  
+  class Meta:
+        db_table='pfc_utilisateur'
