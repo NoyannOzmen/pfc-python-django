@@ -22,19 +22,20 @@
         <ul class="flex flex-col md:flex-row flex-nowrap justify-around">
           <!-- Login Navigation -->    
           {% if request.session.isLoggedIn %}
-            {% if user.refuge %}
+            {% if request.session.shelter_id %}
               <li class="border-2 border-accents2-dark max-[767px]:border-b-fond md:mr-4 md:border-r-fond px-4 max-[767px]:pb-2 place-self-center md:place-self-start pl-2">
-                <a href="/association/profil">Bonjour : {{ user.refuge.nom }}</a>
+                <a href="/association/profil">Bonjour : {{ request.session.user_nom }}</a>
               </li>
               <li class="border-2 border-accents2-dark mr-0 max-[767px]:border-b-fond  md:border-r-fond px-4 pr-6 max-[767px]:pb-2 place-self-center md:place-self-start">
                 <a tabindex=0 class="hover:text-accents1-light" href="/association/profil/animaux">Tableau de&nbsp;bord</a>
               </li>
-            {% elif user.accueillant %}
+            {% endif %}
+            {% if request.session.foster_id %}
               <li class="border-2 border-accents2-dark max-[767px]:border-b-fond md:mr-4 md:border-r-fond px-4 max-[767px]:pb-2 place-self-center md:place-self-start pl-2">
-                {% if user.accueillant.prenom %}
-                  <a href="/famille/profil"> Bonjour : {{ user.accueillant.prenom }}</a>
+                {% if request.session.user_prenom %}
+                  <a href="/famille/profil"> Bonjour : {{ request.session.user_prenom }}</a>
                 {% else %}
-                  <a href="/famille/profil">Bonjour : {{ user.accueillant.nom }}</a>
+                  <a href="/famille/profil">Bonjour : {{ request.session.user_nom }}</a>
                 {% endif %}
               </li>
               <li class="border-2 border-accents2-dark mr-0 max-[767px]:border-b-fond  md:border-r-fond px-4 pr-6 max-[767px]:pb-2 place-self-center md:place-self-start">

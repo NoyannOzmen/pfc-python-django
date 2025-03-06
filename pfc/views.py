@@ -154,9 +154,11 @@ def shelters_list(request):
     if residentSpecies:
       predicates.append(('pensionnaires__espece__nom__contains', residentSpecies))
 
-    #! Add check to exclude unavailable animals
+    exclusion = []
+    exclusion.append(('statut', 'S'))
 
     q_list = [Q(x) for x in predicates]
+    q_list += [~ Q(y) for y in exclusion]
 
     searchedShelters = Association.objects.filter(reduce(operator.and_, q_list)).values()
 
@@ -324,7 +326,6 @@ def signin_login(request):
     hash = user.password.encode('utf-8')
     bytes = userPassword.encode('utf-8')
     result = bcrypt.checkpw(bytes, hash)
-    print(result)
 
     if user is None or result is False:
       messages.error(request, 'Invalid credentials')
@@ -334,16 +335,19 @@ def signin_login(request):
       request.session["user_id"] = user.id
       if user.accueillant:
         request.session["foster_id"] = user.accueillant.id
-      if user.refuge:
+        request.session["user_nom"] = user.accueillant.nom
+        if user.accueillant.prenom:
+          request.session["user_prenom"] = user.accueillant.prenom
+      elif user.refuge:
         request.session["shelter_id"] = user.refuge.id
-      return HttpResponse(template.render({'user' : user }, request))
+        request.session["user_nom"] = user.refuge.nom
+      return HttpResponse(template.render())
 
   context = {}
   return HttpResponse(template.render(context, request))
 
 def signin_logout(request):
-  user = None
-  request.session = None
+  request.session.flush()
   return redirect("main")
 
 # Foster-related routes
@@ -385,6 +389,11 @@ def foster_profile(request):
         famille.code_postal = code_postal
 
       famille.save()
+
+      request.session["user_nom"] = famille.nom
+      if famille.prenom:
+        request.session["user_prenom"] = famille.prenom
+        
     if delete_account:
       user_id = request.session['user_id']
       user = Utilisateur.objects.get(id=user_id)
