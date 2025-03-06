@@ -28,7 +28,7 @@
                 <div class="w-full md:w-full flex justify-center items-center">                   
                   {% for x in animal.images_animal.all %}
                     <img class="object-contain md:h-full rounded-lg"
-                    src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">
+                    src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">
                   {% empty %}
                     <img class="object-contain md:h-full rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
                   {% endfor %}
@@ -76,7 +76,7 @@
                 <div class="w-full md:w-full flex justify-center items-center">
                   {% for x in animal.images_animal.all %}
                     <img class="object-contain w-[80%] h-48 md:h-full rounded-lg"
-                    src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
+                    src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">                  
                   {% empty %}
                     <img class="object-contain w-[80%] h-48 md:h-full rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
                   {% endfor %}

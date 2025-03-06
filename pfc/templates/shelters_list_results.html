@@ -18,7 +18,7 @@
           
         <div class="relative md:w-full flex justify-center items-center">
           {% for x in association.images_association.all %}
-            <img class="font-body rounded-lg" src="{% static '' %}{{ x.url }}" alt="Logo de {{ association.nom }}">
+            <img class="font-body rounded-lg" src="/upload/{{ x.url }}" alt="Logo de {{ association.nom }}">
           {% empty %}
             <img class="font-body rounded-lg" src="{% static 'images/shelter_empty.webp' %}" alt="Logo de {{ association.nom }} bientôt visible">
           {% endfor %}

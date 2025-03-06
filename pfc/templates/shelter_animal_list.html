@@ -81,7 +81,7 @@
               <!-- ANIMAL CARD POUR LE DASHBOARD ASSO -->
               <a data-animalId="{{ animal.id }}" data-nom="{{ animal.nom }}" data-espece="{{ animal.espece.id }}"  data-statut="{{ animal.statut }}" class="animal_card animal_card--visible flex flex-col justify-between content-center relative bg-fond rounded-xl w-36 h-36 shrink-0 md:size-60" href="{% url 'shelter_animal_details' animalId=animal.id %}">
                 {% for x in animal.images_animal.all %}
-                  <img class="rounded-t-xl" src="{% static '' %}{{ x.url }}" alt="Photo de {{ animal.nom }}">
+                  <img class="rounded-t-xl" src="/upload/{{ x.url }}" alt="Photo de {{ animal.nom }}">
                 {% empty %}
                   <img class="rounded-t-xl" src="{% static 'images/animal_empty.webp' %}" alt="image par défaut">
                 {% endfor %}

@@ -81,7 +81,7 @@ class Animal(models.Model):
     return f"{self.nom}"
   
 class Media(models.Model):
-  url = models.CharField(max_length=255)
+  url = models.ImageField(upload_to='images/animaux', null=True)
   ordre = models.IntegerField()
   animal = models.ForeignKey(Animal, related_name='images_animal', blank=True, null=True, on_delete=models.CASCADE)
   association = models.ForeignKey(Association, related_name='images_association', blank=True, null=True, on_delete=models.CASCADE)
