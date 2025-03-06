@@ -46,7 +46,7 @@ def static_map(request):
   template = loader.get_template('static_map.html')
   return HttpResponse(template.render())
 
-""" Model-related routes """
+# Model-related routes
 
 def animal_list(request):
   animals = Animal.objects.filter(statut="S")
@@ -113,8 +113,8 @@ def animal_details(request, animalId):
   }
 
   if request.method == 'POST':
-    famille = Famille.objects.get(id=1)
-    #! Remove hardcoded value before prod
+    foster_id = request.session["foster_id"]
+    famille = Famille.objects.get(id=foster_id)
     start_date = date.today()
     end_date = start_date + relativedelta(years=1)
 
@@ -216,7 +216,6 @@ def signin_foster(request):
     
     user = Utilisateur(email=email, password=password)
     user.save()
-    print(user)
 
     foster = Famille(
       prenom=first_name,
@@ -233,10 +232,8 @@ def signin_foster(request):
       foster.terrain = terrain
 
     foster.save()
-    print(foster)
     user.accueillant=foster
     user.save()
-    print(user)
 
     messages.info(request, "Account created Successfully!")
     return redirect('/')
@@ -246,7 +243,61 @@ def signin_foster(request):
 
 def signin_shelter(request):
   template = loader.get_template('signin_shelter.html')
-  return HttpResponse(template.render())
+
+  if request.method == 'POST':
+    name = request.POST.get('_nom')
+    responsable = request.POST.get('_responsable')
+    rue = request.POST.get('_rue')
+    commune = request.POST.get('_commune')
+    code_postal = request.POST.get('_code_postal')
+    pays = request.POST.get('_pays')
+    telephone = request.POST.get('_telephone')
+    siret = request.POST.get('_siret')
+    site = request.POST.get('_site')
+    description = request.POST.get('_description')
+    email = request.POST.get('_email')
+    password = request.POST.get('_password')
+    confirmation = request.POST.get('_confirmation')
+
+    user = Utilisateur.objects.filter(email=email)
+
+    if user.exists():
+      messages.info(request, "Invalid credentials")
+      return HttpResponse(template.render())
+    
+    if not password == confirmation:
+      messages.info(request, "Please make sure your password is correct in both fields")
+      return HttpResponse(template.render())
+    
+    user = Utilisateur(email=email, password=password)
+    user.save()
+
+    shelter = Association(
+      nom=name,
+      responsable=responsable,
+      telephone=telephone,
+      rue=rue,
+      commune=commune,
+      code_postal=code_postal,
+      pays=pays,
+      siret=siret
+    )
+
+    if site:
+      shelter.site = site
+
+    if description:
+      shelter.description = description
+
+    shelter.save()
+    user.refuge = shelter
+    user.save()
+
+    messages.info(request, "Account created Successfully!")
+    return redirect('/') 
+
+  context = {}
+  return HttpResponse(template.render(context, request))
 
 def signin_login(request):
   template = loader.get_template('signin_login.html')
@@ -260,115 +311,151 @@ def signin_login(request):
       return HttpResponse(template.render())
     
     user = Utilisateur.objects.get(email=email, password=password)
+    request.session["isLoggedIn"] = True
+    request.session["user_id"] = user.id
+    if user.accueillant:
+      request.session["foster_id"] = user.accueillant.id
+    if user.refuge:
+      request.session["shelter_id"] = user.refuge.id
 
     if user is None:
       messages.error(request, 'Invalid credentials')
       return render(request, 'signin_login.html')
     else:
-      return render(request, 'main.html', {'user' : user })
+      return HttpResponse(template.render({'user' : user }, request))
 
   context = {}
   return HttpResponse(template.render(context, request))
 
 def signin_logout(request):
   user = None
+  request.session = None
   return redirect("main")
 
-""" Foster-related routes
-    Hard-coded for now """
+# Foster-related routes
 
 def foster_profile(request):
-  famille = Famille.objects.get(id=1)
+  foster_id = request.session["foster_id"]
+  famille = Famille.objects.get(id=foster_id)
   template = loader.get_template('foster_profile.html')
   context = {
     'famille': famille
   }
 
   if request.method == 'POST':
-    last_name = request.POST.get('_nom')
-    first_name = request.POST.get('_prenom')
-    hebergement = request.POST.get('_hebergement')
-    terrain = request.POST.get('_terrain')
-    rue = request.POST.get('_rue')
-    commune = request.POST.get('_commune')
-    code_postal = request.POST.get('_code_postal')
+    delete_account = request.POST.get("delete_account")
+    edit_infos = request.POST.get("edit_infos")
 
-    if last_name:
-      famille.nom = last_name
-    if first_name:
-      famille.prenom = first_name
-    if hebergement:
-      famille.hebergement = hebergement
-    if terrain:
-      famille.terrain = terrain
-    if rue:
-      famille.rue = rue
-    if commune:
-      famille.commune = commune
-    if code_postal:
-      famille.code_postal = code_postal
+    if edit_infos :
+      last_name = request.POST.get('_nom')
+      first_name = request.POST.get('_prenom')
+      hebergement = request.POST.get('_hebergement')
+      terrain = request.POST.get('_terrain')
+      rue = request.POST.get('_rue')
+      commune = request.POST.get('_commune')
+      code_postal = request.POST.get('_code_postal')
 
-    famille.save()
+      if last_name:
+        famille.nom = last_name
+      if first_name:
+        famille.prenom = first_name
+      if hebergement:
+        famille.hebergement = hebergement
+      if terrain:
+        famille.terrain = terrain
+      if rue:
+        famille.rue = rue
+      if commune:
+        famille.commune = commune
+      if code_postal:
+        famille.code_postal = code_postal
+
+      famille.save()
+    if delete_account:
+      user_id = request.session['user_id']
+      user = Utilisateur.objects.get(id=user_id)
+
+      user.delete()
+      famille.delete()
+
+      messages.error(request, 'Sad to see you go')
+      return render(request, 'main.html')
 
   return HttpResponse(template.render(context, request))
 
 def foster_request(request):
-  famille = Famille.objects.get(id=1)
+  foster_id = request.session["foster_id"]
+  famille = Famille.objects.get(id=foster_id)
   template = loader.get_template('foster_request.html')
   context = {
     'famille': famille
   }
   return HttpResponse(template.render(context,request))
 
-""" Shelter-related routes
-    Harde-coded for now """
+# Shelter-related routes
 
 def shelter_profile(request):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   template = loader.get_template('shelter_profile.html')
   context = {
     'association': association
   }
 
   if request.method == 'POST':
-    name = request.POST.get('_nom')
-    owner = request.POST.get('_president')
-    rue = request.POST.get('_rue')
-    commune = request.POST.get('_commune')
-    code_postal = request.POST.get('_code_postal')
-    pays = request.POST.get('_pays')
-    telephone = request.POST.get('_telephone')
-    siret = request.POST.get('_siret')
-    site = request.POST.get('_site')
-    description = request.POST.get('_description')
+    delete_account = request.POST.get("delete_account")
+    edit_infos = request.POST.get("edit_infos")
 
-    if name:
-      association.nom = name
-    if owner:
-      association.responsable = owner
-    if rue:
-      association.rue = rue
-    if commune:
-      association.commune = commune
-    if code_postal:
-      association.code_postal = code_postal
-    if pays:
-      association.pays = pays
-    if telephone:
-      association.telephone = telephone
-    if siret:
-      association.siret = siret
-    if site:
-      association.site = site
-    if description:
-      association.description = description
+    if edit_infos :
+      name = request.POST.get('_nom')
+      owner = request.POST.get('_president')
+      rue = request.POST.get('_rue')
+      commune = request.POST.get('_commune')
+      code_postal = request.POST.get('_code_postal')
+      pays = request.POST.get('_pays')
+      telephone = request.POST.get('_telephone')
+      siret = request.POST.get('_siret')
+      site = request.POST.get('_site')
+      description = request.POST.get('_description')
 
-    association.save()
-  
+      if name:
+        association.nom = name
+      if owner:
+        association.responsable = owner
+      if rue:
+        association.rue = rue
+      if commune:
+        association.commune = commune
+      if code_postal:
+        association.code_postal = code_postal
+      if pays:
+        association.pays = pays
+      if telephone:
+        association.telephone = telephone
+      if siret:
+        association.siret = siret
+      if site:
+        association.site = site
+      if description:
+        association.description = description
+
+      association.save()
+    
+    if delete_account:
+      user_id = request.session['user_id']
+      user = Utilisateur.objects.get(id=user_id)
+
+      user.delete()
+      association.delete()
+
+      messages.error(request, 'Sad to see you go')
+      return render(request, 'main.html')
+
   return HttpResponse(template.render(context,request))
 
 def shelter_logo(request):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   template = loader.get_template('shelter_logo.html')
   context = {
     'association': association
@@ -376,7 +463,8 @@ def shelter_logo(request):
   return HttpResponse(template.render(context,request))
 
 def shelter_animal_list(request):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   template = loader.get_template('shelter_animal_list.html')
   context = {
     'association': association
@@ -384,7 +472,8 @@ def shelter_animal_list(request):
   return HttpResponse(template.render(context,request))
 
 def shelter_animal_details(request, animalId):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   animal = Animal.objects.get(id=animalId)
   template = loader.get_template('shelter_animal_details.html')
   context = {
@@ -394,7 +483,8 @@ def shelter_animal_details(request, animalId):
   return HttpResponse(template.render(context,request))
 
 def shelter_animal_fostered(request):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   animals = Animal.objects.filter(refuge_id=1, statut="F")
   template = loader.get_template('shelter_animal_fostered.html')
   context = {
@@ -404,7 +494,8 @@ def shelter_animal_fostered(request):
   return HttpResponse(template.render(context,request))
 
 def shelter_animal_create(request):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   species = Espece.objects.all()
   tags = Tag.objects.all()
   template = loader.get_template('shelter_animal_create.html')
@@ -430,7 +521,6 @@ def shelter_animal_create(request):
       animalTags = request.POST.getlist('_tag')
 
       newAnimal = Animal(nom=name, sexe=sex[0], espece=espece, age=age, couleur=colour, description=description, refuge=association)
-      #! Remove hardcoded ID before prod
       newAnimal.save()
 
       if race :
@@ -445,14 +535,14 @@ def shelter_animal_create(request):
       tag_desc = request.POST.get('_desc_tag')
 
       newTag = Tag(nom = tag_name, description = tag_desc)
-      print(newTag)
       newTag.save()
 
   return HttpResponse(template.render(context,request))
 
 def shelter_request_list(request):
-  association = Association.objects.get(id=1)
-  requestedAnimals = Animal.objects.filter(refuge_id=1, statut='S')
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
+  requestedAnimals = Animal.objects.filter(refuge_id=shelter_id, statut='S')
   template = loader.get_template('shelter_request_list.html')
   context = {
     'association': association,
@@ -461,7 +551,8 @@ def shelter_request_list(request):
   return HttpResponse(template.render(context,request))
 
 def shelter_request_details(request, reqId):
-  association = Association.objects.get(id=1)
+  shelter_id = request.session["shelter_id"]
+  association = Association.objects.get(id=shelter_id)
   req = Demande.objects.get(id=reqId)
   template = loader.get_template('shelter_request_details.html')
   context = {

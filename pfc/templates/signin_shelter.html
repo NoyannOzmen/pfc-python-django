@@ -11,7 +11,13 @@
       <fieldset class="font-body rounded-lg shadow my-2 py-5">
         <legend class="font-bold text-lg font-grands text-center">Votre organisme</legend>
 
-      <!-- Flash-like message here -->
+      	{% if messages %}
+          <div class="alert alert-primary" role="alert">
+              {% for message in messages %}
+              {{ message }}
+              {% endfor %}
+          </div>
+        {% endif %}
         
         <div class="mx-auto p-2">  
           <label class="text-center w-full" for="nom">Nom</label>
