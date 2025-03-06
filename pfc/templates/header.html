@@ -21,7 +21,7 @@
       <nav class="rounded-br-lg md:rounded-b-lg flex-auto  bg-accents2-dark text-fond p-3 text-base md:text-lg md:mr-4">
         <ul class="flex flex-col md:flex-row flex-nowrap justify-around">
           <!-- Login Navigation -->    
-          {% if user.is_authenticated %}
+          {% if user %}
             {% if user.refuge %}
               <li class="border-2 border-accents2-dark max-[767px]:border-b-fond md:mr-4 md:border-r-fond px-4 max-[767px]:pb-2 place-self-center md:place-self-start pl-2">
                 <a href="/association/profil">Bonjour : {{ user.refuge.nom }}</a>

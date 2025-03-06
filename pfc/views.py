@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template import loader
 from .models import *
 from django.db.models import Q
@@ -259,20 +259,20 @@ def signin_login(request):
       messages.error(request, 'Invalid credentials')
       return HttpResponse(template.render())
     
-    user = authenticate(email=email, password=password)
+    user = Utilisateur.objects.get(email=email, password=password)
 
     if user is None:
       messages.error(request, 'Invalid credentials')
-      return HttpResponse(template.render())
+      return render(request, 'signin_login.html')
     else:
-      login(request, user)
-      print(user)
-      context = {'user' : user }
-      t = loader.get_template('main.html')
-      return HttpResponse(t.render(context, request))
+      return render(request, 'main.html', {'user' : user })
 
-  context = {}  
+  context = {}
   return HttpResponse(template.render(context, request))
+
+def signin_logout(request):
+  user = None
+  return redirect("main")
 
 """ Foster-related routes
     Hard-coded for now """
