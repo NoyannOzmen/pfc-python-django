@@ -36,52 +36,52 @@
 
             <div class="mx-auto p-2">
               <label class="text-center" for="nom">Nom</label>
-              <input class="block w-full mx-auto" type="text" id="nom" name="_nom" value="{{ association.nom }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="nom" name="_nom" value="{{ association.nom }}" disabled>
             </div>
 
             <div class="mx-auto p-2">
               <label class="text-center" for="president">Président</label>
-              <input class="block w-full mx-auto" type="text" id="president" name="_president" value="{{ association.responsable }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="president" name="_president" value="{{ association.responsable }}" disabled>
             </div>
 
             <div class="mx-auto p-2">  
               <label class="text-center" for="rue">Rue</label>
-              <input class="block w-full mx-auto" type="text" id="rue" name="_rue" value="{{ association.rue }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="rue" name="_rue" value="{{ association.rue }}" disabled>
             </div>
 
             <div class="mx-auto p-2">  
               <label class="text-center" for="commune">Commune</label>
-              <input class="block w-full mx-auto" type="text" id="commune" name="_commune" value="{{ association.commune }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="commune" name="_commune" value="{{ association.commune }}" disabled>
             </div>
 
             <div class="mx-auto p-2">   
               <label class="text-center" for="code_postal">Code Postal</label>
-              <input class="block w-full mx-auto" type="text" id="code_postal" name="_code_postal" pattern="^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$" value="{{ association.code_postal }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="code_postal" name="_code_postal" pattern="^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$" value="{{ association.code_postal }}" disabled>
             </div>
 
             <div class="mx-auto p-2">  
               <label class="text-center" for="pays">Pays</label>
-              <input class="block w-full mx-auto" type="text" id="pays" name="_pays" value="{{ association.pays }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="pays" name="_pays" value="{{ association.pays }}" disabled>
             </div>
 
             <div class="mx-auto p-2">  
               <label class="text-center" for="telephone">N° Téléphone</label>
-              <input class="block w-full mx-auto" type="tel" id="telephone" name="_telephone" pattern="^(0|\+33 )[1-9]([-. ]?[0-9]{2} ){3}([-. ]?[0-9]{2})|([0-9]{8})$" value="{{ association.telephone }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="tel" id="telephone" name="_telephone" pattern="^(0|\+33 )[1-9]([-. ]?[0-9]{2} ){3}([-. ]?[0-9]{2})|([0-9]{8})$" value="{{ association.telephone }}" disabled>
             </div>
 
             <div class="mx-auto p-2">  
               <label class="text-center" for="siret">N° SIRET</label>
-              <input class="block w-full mx-auto" type="text" id="siret" name="_siret" pattern="^(\d{14}|((\d{3}[ ]\d{3}[ ]\d{3})|\d{9})[ ]\d{5})$" value="{{ association.siret }}" disabled>
+              <input class="block w-full mx-auto rounded-lg" type="text" id="siret" name="_siret" pattern="^(\d{14}|((\d{3}[ ]\d{3}[ ]\d{3})|\d{9})[ ]\d{5})$" value="{{ association.siret }}" disabled>
             </div>
 
             <div class="mx-auto p-2 flex flex-wrap">  
               <label class="w-full" for="site">Site Web</label>
-              <input class="block w-full mx-auto" type="url" name="_site" id="site" value="{{ association.site }}"  pattern="https://.*"  disabled />
+              <input class="block w-full mx-auto rounded-lg" type="url" name="_site" id="site" value="{{ association.site }}"  pattern="https://.*"  disabled />
             </div>
 
             <div class="flex flex-wrap mx-auto p-2">
               <label class="place-items-start pr-1 w-full" for="description">Description</label>
-              <textarea rows="5" class="block w-full mx-auto" type="text" name="_description" id="description" disabled>{{ association.description }}</textarea>
+              <textarea rows="5" class="block w-full mx-auto rounded-lg" type="text" name="_description" id="description" disabled>{{ association.description }}</textarea>
             </div>
           </fieldset>
           

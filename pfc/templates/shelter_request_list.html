@@ -47,11 +47,11 @@
                             <td colspan="2" class="px-2 pt-2  border-accents2-light border-solid border-1">Statut</td>
                           </tr>
                           {% for demande in animal.demandes.all %}
-                            <!-- if even
+                            <!-- if even -->
                               <tr class="fold text-sm font-body font-semibold hidden bg bg-fond">                           
-                            else -->
+                            <!-- else
                               <tr class="fold text-sm font-semibold font-body hidden text-fond bg-accents2-light">                                                       
-                            <!-- endif -->
+                            endif -->
                                 
                                 <td colspan="2">{{ demande.famille.nom }}</td>
                                 <td colspan="2">{{ demande.date_debut }}</td>
