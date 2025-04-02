@@ -10,6 +10,7 @@ urlpatterns = [
     path('rgpd/', views.static_gdpr, name='gdpr'),
     path('infos-legales/', views.static_legal, name='legal'),
     path('plan/', views.static_map, name='map'),
+    path('inscription', views.signin_choice, name='signup'),
     path('famille/inscription', views.signin_foster, name='foster_signup'),
     path('association/inscription/', views.signin_shelter, name='shelter_signup'),
     path('connexion/', views.signin_login, name='login'),

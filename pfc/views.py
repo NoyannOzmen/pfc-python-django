@@ -192,6 +192,10 @@ def shelters_details(request, shelterId):
 
 """ Auth-related routes """
 
+def signin_choice(request):
+  template = loader.get_template('signin_choice.html')
+  return HttpResponse(template.render())
+
 def signin_foster(request):
   template = loader.get_template('signin_foster.html')
 
