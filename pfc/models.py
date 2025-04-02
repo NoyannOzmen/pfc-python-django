@@ -116,14 +116,14 @@ class Utilisateur(AbstractBaseUser):
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        related_name="identifiant_association"     
-    )
+        related_name='identifiant_association'
+  )
   accueillant  = models.ForeignKey(
       Famille,
       blank=True,
       null=True,
       on_delete=models.CASCADE,
-      related_name="identifiant_famille"   
+      related_name='identifiant_famille'
   )
   last_login = None
   USERNAME_FIELD = 'email'

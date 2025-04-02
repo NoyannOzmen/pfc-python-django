@@ -79,18 +79,18 @@ def animal_list(request):
     if maxAge:
       predicates.append(('age__lte', maxAge))
 
-    tag = request.POST.getlist('_tag')
-    if tag:
-      exclusion = []
-      for x in tag:
-        exclusion.append(('tags__nom__contains', x))
-
     dpt = request.POST.get('_dptSelect')
     if dpt:
       predicates.append(('refuge__code_postal__startswith', dpt))
 
     q_list = [Q(x) for x in predicates]
-    q_list += [~Q(y) for y in exclusion]
+
+    tag = request.POST.getlist('_tag')
+    if tag:
+      exclusion = []
+      for x in tag:
+        exclusion.append(('tags__nom__contains', x))
+      q_list += [~Q(y) for y in exclusion]
 
     searchedAnimals = Animal.objects.filter(reduce(operator.and_, q_list)).values()
 
@@ -157,13 +157,14 @@ def shelters_list(request):
     if residentSpecies:
       predicates.append(('pensionnaires__espece__nom__contains', residentSpecies))
 
-    exclusion = []
-    exclusion.append(('statut', 'S'))
+    """ Disabled due to odd behaviour """
+    """ predicates.append(('pensionnaires__statut', 'S')) """
 
     q_list = [Q(x) for x in predicates]
-    q_list += [~ Q(y) for y in exclusion]
 
     searchedShelters = Association.objects.filter(reduce(operator.and_, q_list)).values()
+
+    print(searchedShelters)
 
     template = loader.get_template('shelters_list_results.html')
     context = {
@@ -182,6 +183,7 @@ def shelters_list(request):
 
 def shelters_details(request, shelterId):
   shelter = Association.objects.get(id=shelterId)
+  print(shelter.identifiant_association)
   animals = Animal.objects.filter(refuge_id=shelterId, statut="S")
   template = loader.get_template('shelters_details.html')
   context = {

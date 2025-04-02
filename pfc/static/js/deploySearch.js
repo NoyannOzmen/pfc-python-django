@@ -13,5 +13,5 @@ deployButton.addEventListener("keydown", function(e) {
 function deploySearch() {
   shortSearch.classList.toggle('hidden');
   filters.classList.toggle('hidden');
-  filters.classList.toggle('grid');
+  filters.classList.add('grid');
 }
