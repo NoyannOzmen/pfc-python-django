@@ -113,17 +113,18 @@ class Utilisateur(AbstractBaseUser):
   password = models.CharField(max_length=255, unique=True)
   refuge  = models.ForeignKey(
         Association,
+        related_name='identifiant_association',
         blank=True,
         null=True,
-        on_delete=models.CASCADE,
-        related_name='identifiant_association'
+        on_delete=models.CASCADE
   )
   accueillant  = models.ForeignKey(
       Famille,
+      related_name='identifiant_famille',
       blank=True,
       null=True,
-      on_delete=models.CASCADE,
-      related_name='identifiant_famille'
+      on_delete=models.CASCADE
+
   )
   last_login = None
   USERNAME_FIELD = 'email'
