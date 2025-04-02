@@ -187,6 +187,7 @@ function dropDownSearch () {
     
     searchButton.addEventListener('click', ()=>{
         const searchFilters = document.getElementById('search-filters');
-        searchFilters.classList.toggle('hidden')
+        searchFilters.classList.toggle('hidden');
+        searchFilters.classList.toggle('flex')
     })
 }

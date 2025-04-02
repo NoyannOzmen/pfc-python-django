@@ -6,6 +6,7 @@ addTagBtn.addEventListener('click', (event)=>{
     event.preventDefault();
     addTagForm.reset();
     addTagModal.classList.toggle('hidden');
+    addTagModal.classList.toggle('flex')
 })
 
 const closeBtns = document.querySelectorAll('.cancel');
