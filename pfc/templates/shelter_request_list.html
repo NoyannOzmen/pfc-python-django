@@ -36,23 +36,22 @@
                       <td colspan="3" scope="colgroup">Nombre de demandes</td>
                     </tr>
                     {% for animal in requestedAnimals %}
-                        <tr tabindex="0"class="view text-fond text-sm bg-accents2 font-grands font-semibold p-3 border-accents2-dark border-solid border-1 hover:bg-accents2-dark">
+                        <tr tabindex="0"class="view text-fond text-sm bg-accents2-dark font-grands font-semibold p-3 border-accents2-light border-solid border-1 hover:bg-accents2">
                           <td colspan="3" scope="colgroup" class="px-2 pt-2  border-accents2-dark border-solid border-1">{{ animal.nom }}</td>
                           <td colspan="3" scope="colgroup" class="px-2 pt-2  border-accents2-dark border-solid border-1">{{ animal.demandes.all|length }}</td>
                         </tr>
                         <tr class="fold mb-3 bg-fond rounded-b-lg hidden">
-                          <tr class="fold text-fond text-sm bg-accents2-light font-grands font-semibold p-3 border-accents2-dark border-solid border-1 hidden">
+                          <tr class="fold text-fond text-sm bg-accents2 font-grands font-semibold p-3 border-accents2-dark border-solid border-1 hidden">
                             <td colspan="2" class="px-2 pt-2  border-accents2-light border-solid border-1">Famille</td>
                             <td colspan="2" class="px-2 pt-2  border-accents2-light border-solid border-1">Date de demande</td>
                             <td colspan="2" class="px-2 pt-2  border-accents2-light border-solid border-1">Statut</td>
                           </tr>
                           {% for demande in animal.demandes.all %}
-                            <!-- if even -->
-                              <tr class="fold text-sm font-body font-semibold hidden bg bg-fond">                           
-                            <!-- else
-                              <tr class="fold text-sm font-semibold font-body hidden text-fond bg-accents2-light">                                                       
-                            endif -->
-                                
+                            {% if forloop.counter|divisibleby:2 %}
+                              <tr class="fold text-sm font-semibold font-body hidden text-fond bg-accents2-light">                            
+                            {% else %}
+                              <tr class="fold text-sm font-body font-semibold hidden bg bg-fond">                                                  
+                            {% endif %}
                                 <td colspan="2">{{ demande.famille.nom }}</td>
                                 <td colspan="2">{{ demande.date_debut }}</td>
                                 <td colspan="2"><a tabindex="0" class="hover:underline"
