@@ -58,7 +58,7 @@
                           {% empty %}
                             <img class="w-28 rounded-lg" src="{% static 'images/animal_empty.webp' %}" alt="Photo à venir">
                           {% endfor %}
-                          <a class="rounded-full block bg-accents1 text-fond w-16 text-center text-xs font-semibold py-1 hover:underline" href="{% url 'shelter_animal_details' animalId=animal.id %}">Détails</a>
+                          <a class="rounded-full block bg-accents1 text-fond w-24 text-center text-xs font-semibold px-6 hover:underline" href="{% url 'shelter_animal_details' animalId=animal.id %}">Détails</a>
                         </div>
                         
                         <div class="pl-4">
@@ -75,7 +75,7 @@
                         
                         <div>
                           <p class="text-sm italic leading-3">Sexe</p>
-                          <p class="text-base font-semibold">{{ animal.sexe }}</p>
+                          <p class="text-base font-semibold">{{ animal.get_sexe_display }}</p>
                         </div>
                         
                         <div class="">
@@ -92,12 +92,12 @@
                       </div>
                       <div class="flex flex-wrap mt-4 px-6 gap-1">
                       {% for tag in animal.tags.all %}
-                          <p class="group rounded-full block bg-accents1 text-fond text-center text-xs font-semibold py-1 px-2">
-                                {{ tag.tags.nom }}
-                                <span class="group-hover:block hidden z-10 bg-accents2-dark text-fond absolute px-2 py-2 text-xs rounded-b-xl rounded-tr-xl">
-                                  {{ tag.tags.description }}
-                                </span>
-                              </p>
+                        <p class="group p-2 rounded-full block justify-center bg-accents1-light text-fond text-center text-sm font-semibold py-1 px-2">
+                          {{ tag.nom }}
+                          <span class="group-hover:block hidden z-10 bg-accents2 text-fond absolute px-2 py-2 text-sm rounded-b-xl rounded-tr-xl">
+                            {{ tag.description }}
+                          </span>
+                        </p>
                       {% endfor %}
                       </div>
                     </div>  
@@ -119,7 +119,7 @@
                         </div>
                         <div class="mb-2">
                           <p class="text-sm italic leading-3">e-mail</p>
-                          <p class="text-base font-semibold">{{ animal.accueillant.identifiant_famille.email }}</p>
+                          <p class="text-base font-semibold">{{ animal.accueillant.identifiant_famille.first }}</p>
                         </div>
                         <div class="mb-2">
                           <p class="text-sm italic leading-4">Adresse</p>
