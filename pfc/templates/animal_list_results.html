@@ -5,10 +5,10 @@
   
   {# Menu de recherche #}
   <div class="md:my-3 flex flex-wrap font-body w-full bg-zoning rounded-lg shadow justify-around">      
-    {% if searchedAnimals is empty %}
-      <h3 class="font-grands text-2xl w-full my-2 text-center">Aucun animal ne correspond à votre recherche</h3>
-    {% else %}
+    {% if searchedAnimals.all %}
       <h3 class="font-grands text-2xl w-full my-2 text-center">Résultats de votre recherche</h3>
+    {% else %}
+      <h3 class="font-grands text-2xl w-full my-2 text-center">Aucun animal ne correspond à votre recherche</h3>
     {% endif %}
     <a tabindex="0" class="w-[20%] col-span-1 my-1 py-2 px-2 bg-accents2-dark text-fond transition ease-in duration-200 text-center text-xs font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" href="/animaux">Revenir à la recherche</a>
   </div>

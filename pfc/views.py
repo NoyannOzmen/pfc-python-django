@@ -92,7 +92,7 @@ def animal_list(request):
         exclusion.append(('tags__nom__contains', x))
       q_list += [~Q(y) for y in exclusion]
 
-    searchedAnimals = Animal.objects.filter(reduce(operator.and_, q_list)).values()
+    searchedAnimals = Animal.objects.filter(reduce(operator.and_, q_list))
 
     template = loader.get_template('animal_list_results.html')
     context = {
@@ -162,9 +162,7 @@ def shelters_list(request):
 
     q_list = [Q(x) for x in predicates]
 
-    searchedShelters = Association.objects.filter(reduce(operator.and_, q_list)).values()
-
-    print(searchedShelters)
+    searchedShelters = Association.objects.filter(reduce(operator.and_, q_list))
 
     template = loader.get_template('shelters_list_results.html')
     context = {
@@ -183,7 +181,6 @@ def shelters_list(request):
 
 def shelters_details(request, shelterId):
   shelter = Association.objects.get(id=shelterId)
-  print(shelter.identifiant_association)
   animals = Animal.objects.filter(refuge_id=shelterId, statut="S")
   template = loader.get_template('shelters_details.html')
   context = {
