@@ -25,7 +25,9 @@
       <div class="w-full px-2 py-4 gap-2 text-xs flex flex-col">
         <p class="font-body text-texte text-center md:text-base">Adresse : {{ association.rue }},&nbsp;{{ association.code_postal }},&nbsp;{{ association.commune}},&nbsp;{{ association.pays }}</p>
         <p class="font-body text-texte text-center md:text-base">Téléphone : {{ association.telephone }}</p>
-        <p class="font-body text-texte text-center md:text-base">E-mail : {{ association.identifiant_association.first }}</p>
+        {% if association.site %}
+				<p class="font-body text-texte text-center md:text-base">{{ association.site }}</p>
+				{% endif %}
         {% if association.description %}
 				<p class="font-body text-texte text-center md:text-base">{{ association.description }}</p>
 				{% endif %}
