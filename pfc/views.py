@@ -137,7 +137,7 @@ def shelters_list(request):
   tags = Tag.objects.all()
 
   if request.method == 'POST':
-    predicates = []
+    predicates = [('pensionnaires__statut', 'S')]
 
     dptFull = request.POST.get('_dptSelectFull')
     dptSmall = request.POST.get('_dptSelectSmall')
@@ -157,12 +157,9 @@ def shelters_list(request):
     if residentSpecies:
       predicates.append(('pensionnaires__espece__nom__contains', residentSpecies))
 
-    """ Disabled due to odd behaviour """
-    """ predicates.append(('pensionnaires__statut', 'S')) """
-
     q_list = [Q(x) for x in predicates]
 
-    searchedShelters = Association.objects.filter(reduce(operator.and_, q_list))
+    searchedShelters = Association.objects.filter(reduce(operator.and_, q_list)).distinct()
 
     template = loader.get_template('shelters_list_results.html')
     context = {
@@ -640,7 +637,8 @@ def shelter_request_list(request):
     return render(request, 'main.html')
   
   association = Association.objects.get(id=shelter_id)
-  requestedAnimals = Animal.objects.filter(refuge_id=shelter_id, statut='S')
+  requestedAnimals = Animal.objects.filter(refuge_id=shelter_id, statut='S', demandes__isnull=False).distinct()
+
   template = loader.get_template('shelter_request_list.html')
   context = {
     'association': association,
